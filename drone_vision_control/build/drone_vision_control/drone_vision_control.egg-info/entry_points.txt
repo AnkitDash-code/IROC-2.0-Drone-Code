@@ -1,0 +1,3 @@
+[console_scripts]
+corner_detection = drone_vision_control.corner_detection:main
+drone_vision_controller = drone_vision_control.vision_controller_node:main

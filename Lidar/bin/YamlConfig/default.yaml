@@ -1,0 +1,22 @@
+IntegralTime: 1000
+HorizontalMirror: false
+VerticalFlip: false
+StreamType: 2
+ResolutionDepth: 1
+Filter:
+  UseFilter: true
+  FilterSize: 3
+  Filter1:
+    FilterType: 1
+    FilterParam:
+      - 3
+      - 1
+  Filter2:
+    FilterType: 3
+    FilterParam:
+      - 150
+  Filter3:
+    FilterType: 4
+    FilterParam:
+      - 100
+      - 100

@@ -1,0 +1,8 @@
+# Ignore specific SDK folder
+SynexensPythonSDK4_4.2.4.0_202504281506/
+
+# Ignore PyTorch and ONNX model files
+*.pt
+*.onnx*.log
+logs/
+log/
