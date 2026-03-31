@@ -121,3 +121,63 @@ python3 intelligent_flight.py
 - Add a small launcher CLI to select mission profiles.
 - Consolidate duplicate mission variants and standardize logging.
 - Add SITL-focused integration tests for critical mission scripts.
+
+## D455 Protocol Validation (Phase1 + Phase2)
+
+After running a D455 protocol folder (`protocol_YYYYMMDD_HHMMSS`), use:
+
+```bash
+python3 phase12_test_suite.py
+```
+
+This validates:
+- `phase1_static.csv`
+- `phase2_translate.csv`
+
+And writes:
+- `phase12_report.txt`
+- `phase12_report.json`
+
+Optional GUI dashboard:
+
+```bash
+python3 phase12_test_suite.py --gui --host 0.0.0.0 --port 5060
+```
+
+Open: `http://<jetson_ip>:5060`
+
+## Optional Edge Architecture: XFeat + LightGlue + TensorRT
+
+The exact edge-robotics architecture discussed for this project can be added as an optional backend:
+
+- XFeat feature extraction (fast on Jetson-class devices)
+- LightGlue matching
+- Native TensorRT deployment
+- C++ implementation with Python bindings via PyBind
+
+This architecture is attractive for embedded robotics because extraction and matching both run on GPU with low latency.
+
+### Build Notes (Jetson)
+
+The common workflow is CMake + Make (or Ninja). If the external project already provides `CMakeLists.txt`, the minimal build flow is:
+
+```bash
+git clone <repo-url>
+cd <repo-dir>
+mkdir -p build
+cd build
+cmake .. -DCMAKE_BUILD_TYPE=Release
+make -j$(nproc)
+```
+
+If Python bindings are included, they are typically built in the same step and then imported from Python once the shared library is produced.
+
+### Integration Strategy In This Repo
+
+- Keep the existing MSCKF/VO path as fallback.
+- Add runtime switch to select backend (`MSCKF`, `XFEAT_LIGHTGLUE_TRT`).
+- Feed the selected backend output into the same MAVROS publish path to avoid touching flight-control wiring.
+
+### Important Catch
+
+This path is not pure Python. You need a native compile step on Jetson, and success depends on your CUDA/TensorRT toolchain versions matching the external project requirements.

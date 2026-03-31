@@ -1,0 +1,21 @@
+[INFO] [1774739491.666162864] [d455_ipm_lk_velocity_node]: D455 IPM LK Velocity Node initialized
+[INFO] [1774739491.667596156] [d455_ipm_lk_velocity_node]: Topics: image=/camera/camera/color/image_raw, camera_info=/camera/camera/color/camera_info, range=/d455/test/range, output=/d455/ipm_lk/velocity
+[INFO] [1774739491.668350069] [d455_ipm_lk_velocity_node]: Intrinsics init: fx=386.480, fy=386.050, cx=330.830, cy=247.260
+[INFO] [1774739491.669270753] [d455_ipm_lk_velocity_node]: Filter params: blur=7 feature_q=0.020 min_dist=10 lk_win=21 stationary_flow_px=0.350 flow_mad_k=3.00
+[INFO] [1774739491.669851876] [d455_ipm_lk_velocity_node]: Tilt=59.76 deg (sin=0.86392)
+[INFO] [1774739491.670406041] [d455_ipm_lk_velocity_node]: IPM homography matrix:
+[INFO] [1774739491.671753626] [d455_ipm_lk_velocity_node]: [[ -0.806522  -1.595761 765.965217]
+ [ -0.        -2.765217 940.173913]
+ [ -0.        -0.003764   1.      ]]
+[INFO] [1774739491.689915150] [d455_ipm_lk_velocity_node]: CameraInfo received. Using hardware intrinsics: fx=387.007, fy=386.570, cx=330.827, cy=247.261
+[INFO] [1774739491.713745523] [d455_ipm_lk_velocity_node]: safety_zero reason=bootstrap quality=MEDIUM
+[INFO] [1774739492.636884622] [d455_ipm_lk_velocity_node]: flow_status tracks=68 dt=0.0667s alt=1.000m dpx=+6.856 dpy=-5.089 v_forward=-0.191m/s v_right=-0.258m/s quality=HIGH
+[INFO] [1774739493.636310357] [d455_ipm_lk_velocity_node]: flow_status tracks=100 dt=0.0668s alt=1.000m dpx=+8.467 dpy=-10.943 v_forward=-0.246m/s v_right=-0.173m/s quality=HIGH
+[INFO] [1774739494.643700425] [d455_ipm_lk_velocity_node]: flow_status tracks=154 dt=0.0667s alt=1.000m dpx=+5.730 dpy=-12.432 v_forward=-0.046m/s v_right=-0.377m/s quality=HIGH
+[INFO] [1774739495.699805910] [d455_ipm_lk_velocity_node]: flow_status tracks=67 dt=0.0667s alt=1.000m dpx=-12.478 dpy=+10.691 v_forward=-0.741m/s v_right=+0.830m/s quality=HIGH
+[INFO] [1774739496.717120041] [d455_ipm_lk_velocity_node]: flow_status tracks=218 dt=0.0667s alt=1.000m dpx=-40.792 dpy=-66.252 v_forward=-1.703m/s v_right=+0.719m/s quality=HIGH
+[INFO] [1774739497.765774890] [d455_ipm_lk_velocity_node]: flow_status tracks=57 dt=0.0667s alt=1.000m dpx=+0.084 dpy=+0.068 v_forward=-0.136m/s v_right=+0.005m/s quality=HIGH
+[INFO] [1774739498.783110151] [d455_ipm_lk_velocity_node]: flow_status tracks=55 dt=0.0667s alt=1.000m dpx=+2.726 dpy=-4.271 v_forward=+0.422m/s v_right=-0.155m/s quality=HIGH
+[INFO] [1774739499.782786796] [d455_ipm_lk_velocity_node]: flow_status tracks=88 dt=0.0667s alt=1.000m dpx=+0.322 dpy=-9.534 v_forward=+0.279m/s v_right=+0.065m/s quality=HIGH
+[INFO] [1774739500.834026297] [d455_ipm_lk_velocity_node]: flow_status tracks=116 dt=0.0667s alt=1.000m dpx=-0.095 dpy=-0.076 v_forward=+0.113m/s v_right=-0.001m/s quality=HIGH
+[INFO] [1774739501.902497578] [d455_ipm_lk_velocity_node]: flow_status tracks=99 dt=0.0667s alt=1.000m dpx=-0.207 dpy=+0.298 v_forward=+0.015m/s v_right=+0.008m/s quality=HIGH

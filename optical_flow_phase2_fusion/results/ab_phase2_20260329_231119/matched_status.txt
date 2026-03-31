@@ -1,0 +1,1 @@
+MATCHED_OK n=71 start_offsets standalone=20 fusion=30

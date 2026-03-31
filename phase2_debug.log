@@ -1,0 +1,392 @@
+[WARN] [1774905536.126703520] []: Old-style arguments are deprecated; see --help for new-style arguments
+[INFO] [1774905536.159501248] [static_transform_publisher_rhXiaZ6hUuH24riJ]: Spinning until stopped - publishing transform
+translation: ('0.000000', '0.000000', '0.000000')
+rotation: ('1.000000', '0.000000', '0.000000', '0.000001')
+from 'base_link' to 'camera_link'
+[WARN] [1774906395.114524160] []: Old-style arguments are deprecated; see --help for new-style arguments
+[INFO] [1774906395.138274080] [static_transform_publisher_RM7FKvOGdZo7PN33]: Spinning until stopped - publishing transform
+translation: ('0.000000', '0.000000', '0.000000')
+rotation: ('1.000000', '0.000000', '0.000000', '0.000001')
+from 'base_link' to 'camera_link'
+[INFO] [1774906439.808688992] [imu_filter_madgwick]: Starting ImuFilter
+[INFO] [1774906439.809409312] [imu_filter_madgwick]: Using dt computed from message headers
+[INFO] [1774906439.809472608] [imu_filter_madgwick]: The gravity vector is kept in the IMU message.
+[INFO] [1774906439.809708096] [imu_filter_madgwick]: Imu filter gain set to 0.100000
+[INFO] [1774906439.809753760] [imu_filter_madgwick]: Gyro drift bias set to 0.000000
+[INFO] [1774906439.809779968] [imu_filter_madgwick]: Magnetometer bias values: 0.000000 0.000000 0.000000
+[WARN] [1774906440.774131616] []: Old-style arguments are deprecated; see --help for new-style arguments
+[INFO] [1774906440.822780800] [static_transform_publisher_cvK0kJrpzdHNPsUN]: Spinning until stopped - publishing transform
+translation: ('0.000000', '0.000000', '0.000000')
+rotation: ('0.000000', '0.000000', '0.000000', '1.000000')
+from 'map' to 'odom'
+[WARN] [1774906449.817101856] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[INFO] [1774906453.180491456] [cs20_lidar_bridge]: CS20 bridge started | mono=/camera/camera/color/image_raw depth=/camera/camera/aligned_depth_to_color/image_raw range=/tof_sensor/range
+[WARN] [1774906459.817097472] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[WARN] [1774906469.817087392] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[WARN] [1774906479.817099424] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[WARN] [1774906489.817096768] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[WARN] [1774906499.817091872] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[WARN] [1774906509.817097024] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[WARN] [1774906519.817089760] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[WARN] [1774906529.817088288] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[INFO] [1774906535.375921984] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[INFO] [1774906535.376014240] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[INFO] [1774906535.375997888] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[INFO] [1774906535.377395168] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[INFO] [1774906993.028794880] [imu_filter_madgwick]: Starting ImuFilter
+[INFO] [1774906993.029268672] [imu_filter_madgwick]: Using dt computed from message headers
+[INFO] [1774906993.029324512] [imu_filter_madgwick]: The gravity vector is kept in the IMU message.
+[INFO] [1774906993.029441184] [imu_filter_madgwick]: Imu filter gain set to 0.100000
+[INFO] [1774906993.029483616] [imu_filter_madgwick]: Gyro drift bias set to 0.000000
+[INFO] [1774906993.029517696] [imu_filter_madgwick]: Magnetometer bias values: 0.000000 0.000000 0.000000
+[WARN] [1774906993.999199264] []: Old-style arguments are deprecated; see --help for new-style arguments
+[INFO] [1774906994.030504160] [static_transform_publisher_krUUSbeRkQ0XvJCv]: Spinning until stopped - publishing transform
+translation: ('0.000000', '0.000000', '0.000000')
+rotation: ('0.000000', '0.000000', '0.000000', '1.000000')
+from 'map' to 'odom'
+[WARN] [1774907003.034420640] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[INFO] [1774907006.315233792] [cs20_lidar_bridge]: CS20 bridge started | mono=/camera/camera/color/image_raw depth=/camera/camera/aligned_depth_to_color/image_raw range=/tof_sensor/range
+[WARN] [1774907013.034487616] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[WARN] [1774907023.034437728] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[WARN] [1774907033.034453952] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[WARN] [1774907043.034454240] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[WARN] [1774907053.034446528] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[INFO] [1774907062.673275648] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[INFO] [1774907062.673342848] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[INFO] [1774907062.675233536] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[INFO] [1774907344.270531872] [imu_filter_madgwick]: Starting ImuFilter
+[INFO] [1774907344.271142208] [imu_filter_madgwick]: Using dt computed from message headers
+[INFO] [1774907344.271370080] [imu_filter_madgwick]: The gravity vector is kept in the IMU message.
+[INFO] [1774907344.271592032] [imu_filter_madgwick]: Imu filter gain set to 0.100000
+[INFO] [1774907344.271662016] [imu_filter_madgwick]: Gyro drift bias set to 0.000000
+[INFO] [1774907344.271690336] [imu_filter_madgwick]: Magnetometer bias values: 0.000000 0.000000 0.000000
+[WARN] [1774907345.235503584] []: Old-style arguments are deprecated; see --help for new-style arguments
+[INFO] [1774907345.268714144] [static_transform_publisher_0EMxd2aEI98anbBQ]: Spinning until stopped - publishing transform
+translation: ('0.000000', '0.000000', '0.000000')
+rotation: ('0.000000', '0.000000', '0.000000', '1.000000')
+from 'map' to 'odom'
+[INFO] [1774907345.664588288] [imu_filter_madgwick]: First IMU message received.
+[INFO] [1774907364.041836608] [cs20_lidar_bridge]: CS20 bridge started | mono=/camera/camera/color/image_raw depth=/camera/camera/aligned_depth_to_color/image_raw range=/tof_sensor/range
+[INFO] [1774907479.116120128] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[INFO] [1774907479.116122112] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[INFO] [1774907479.116375456] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/usr/lib/python3.10/runpy.py", line 86, in _run_code
+    exec(code, run_globals)
+  File "/home/jetson123/Drone/optical_flow_cs20_lidar/cs20_lidar_bridge.py", line 277, in <module>
+    main()
+  File "/home/jetson123/Drone/optical_flow_cs20_lidar/cs20_lidar_bridge.py", line 267, in main
+    rclpy.spin(node)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/__init__.py", line 229, in spin
+    executor.spin_once()
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 808, in spin_once
+    self._spin_once_impl(timeout_sec)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 797, in _spin_once_impl
+    handler, entity, node = self.wait_for_ready_callbacks(timeout_sec=timeout_sec)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 780, in wait_for_ready_callbacks
+    return next(self._cb_iter)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 681, in _wait_for_ready_callbacks
+    raise ExternalShutdownException()
+rclpy.executors.ExternalShutdownException
+/home/jetson123/Drone/SynexensPythonSDK4_4.2.4.0_202504281506
+[INFO] [launch]: All log files can be found below /home/jetson123/.ros/log/1970-01-01-05-40-39-602707-jetson123-desktop-11457
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [launch.user]: 🚀 Launching as Normal ROS Node
+[INFO] [realsense2_camera_node-1]: process started with pid [11483]
+[realsense2_camera_node-1] [0m[INFO] [0000000640.021686176] [camera.camera]: RealSense ROS v4.56.4[0m
+[realsense2_camera_node-1] [0m[INFO] [0000000640.023245792] [camera.camera]: Built with LibRealSense v2.56.4[0m
+[realsense2_camera_node-1] [0m[INFO] [0000000640.023876768] [camera.camera]: Running with LibRealSense v2.56.4[0m
+[realsense2_camera_node-1] [33m[WARN] [0000000640.036305568] [camera.camera]: No RealSense devices were found![0m
+[INFO] [0000000642.409660192] [imu_filter_madgwick]: Starting ImuFilter
+[INFO] [0000000642.410131552] [imu_filter_madgwick]: Using dt computed from message headers
+[INFO] [0000000642.410190912] [imu_filter_madgwick]: The gravity vector is kept in the IMU message.
+[INFO] [0000000642.410308672] [imu_filter_madgwick]: Imu filter gain set to 0.100000
+[INFO] [0000000642.410350400] [imu_filter_madgwick]: Gyro drift bias set to 0.000000
+[INFO] [0000000642.410372032] [imu_filter_madgwick]: Magnetometer bias values: 0.000000 0.000000 0.000000
+[WARN] [0000000643.396598720] []: Old-style arguments are deprecated; see --help for new-style arguments
+[INFO] [0000000643.425843488] [static_transform_publisher_aXZmR4zw9IlgGhkN]: Spinning until stopped - publishing transform
+translation: ('0.000000', '0.000000', '0.000000')
+rotation: ('0.000000', '0.000000', '0.000000', '1.000000')
+from 'map' to 'odom'
+[WARN] [0000000643.894900416] []: Old-style arguments are deprecated; see --help for new-style arguments
+[INFO] [0000000643.931002368] [static_transform_publisher_UFJfyHI3Z6R7vLat]: Spinning until stopped - publishing transform
+translation: ('0.000000', '0.000000', '0.000000')
+rotation: ('1.000000', '0.000000', '0.000000', '0.000001')
+from 'base_link' to 'camera_link'
+[realsense2_camera_node-1] [33m[WARN] [0000000646.122140800] [camera.camera]: No RealSense devices were found![0m
+[realsense2_camera_node-1] [33m[WARN] [0000000652.133187968] [camera.camera]: No RealSense devices were found![0m
+[WARN] [0000000652.415555520] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[realsense2_camera_node-1] [33m[WARN] [0000000658.213944512] [camera.camera]: No RealSense devices were found![0m
+[WARN] [0000000662.415541952] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[realsense2_camera_node-1] [33m[WARN] [0000000664.297758016] [camera.camera]: No RealSense devices were found![0m
+[realsense2_camera_node-1] [33m[WARN] [0000000670.381652224] [camera.camera]: No RealSense devices were found![0m
+[WARN] [0000000672.415553888] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[realsense2_camera_node-1] [33m[WARN] [0000000676.466223200] [camera.camera]: No RealSense devices were found![0m
+[WARN] [0000000682.415542176] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[realsense2_camera_node-1] [33m[WARN] [0000000682.549378208] [camera.camera]: No RealSense devices were found![0m
+[realsense2_camera_node-1] [33m[WARN] [0000000688.629791520] [camera.camera]: No RealSense devices were found![0m
+[WARN] [0000000692.415543456] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[realsense2_camera_node-1] [33m[WARN] [0000000694.710917280] [camera.camera]: No RealSense devices were found![0m
+[realsense2_camera_node-1] [33m[WARN] [0000000700.790024640] [camera.camera]: No RealSense devices were found![0m
+[WARN] [0000000702.415553952] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[realsense2_camera_node-1] [33m[WARN] [0000000706.870955808] [camera.camera]: No RealSense devices were found![0m
+[WARN] [0000000712.415545632] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[realsense2_camera_node-1] [33m[WARN] [0000000712.954827136] [camera.camera]: No RealSense devices were found![0m
+[realsense2_camera_node-1] [33m[WARN] [0000000719.033701344] [camera.camera]: No RealSense devices were found![0m
+[WARN] [0000000722.415539136] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[realsense2_camera_node-1] [33m[WARN] [0000000725.114150112] [camera.camera]: No RealSense devices were found![0m
+[realsense2_camera_node-1] [33m[WARN] [0000000731.197773472] [camera.camera]: No RealSense devices were found![0m
+[WARN] [0000000732.415556896] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[realsense2_camera_node-1] [33m[WARN] [0000000737.277792160] [camera.camera]: No RealSense devices were found![0m
+[WARN] [0000000742.415547520] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[realsense2_camera_node-1] [33m[WARN] [0000000743.357983008] [camera.camera]: No RealSense devices were found![0m
+[realsense2_camera_node-1] [33m[WARN] [0000000749.438652416] [camera.camera]: No RealSense devices were found![0m
+[WARN] [0000000752.415548256] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[realsense2_camera_node-1] [33m[WARN] [0000000755.519915712] [camera.camera]: No RealSense devices were found![0m
+[realsense2_camera_node-1] [33m[WARN] [0000000761.598760000] [camera.camera]: No RealSense devices were found![0m
+[WARN] [0000000762.415557184] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[realsense2_camera_node-1] [33m[WARN] [0000000767.678072576] [camera.camera]: No RealSense devices were found![0m
+[WARN] [0000000772.415546880] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[realsense2_camera_node-1] [33m[WARN] [0000000773.757770752] [camera.camera]: No RealSense devices were found![0m
+[realsense2_camera_node-1] [33m[WARN] [0000000779.837828032] [camera.camera]: No RealSense devices were found![0m
+[WARN] [0000000782.415551808] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[realsense2_camera_node-1] [33m[WARN] [0000000785.918203520] [camera.camera]: No RealSense devices were found![0m
+[realsense2_camera_node-1] [33m[WARN] [0000000791.998135104] [camera.camera]: No RealSense devices were found![0m
+[WARN] [0000000792.415541984] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[realsense2_camera_node-1] [33m[WARN] [0000000798.079539392] [camera.camera]: No RealSense devices were found![0m
+[WARN] [0000000802.415547296] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[realsense2_camera_node-1] [33m[WARN] [0000000804.157771936] [camera.camera]: No RealSense devices were found![0m
+[realsense2_camera_node-1] [33m[WARN] [0000000810.241945440] [camera.camera]: No RealSense devices were found![0m
+[WARN] [0000000812.415541952] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[realsense2_camera_node-1] [33m[WARN] [0000000816.322119712] [camera.camera]: No RealSense devices were found![0m
+[realsense2_camera_node-1] [33m[WARN] [0000000822.402312736] [camera.camera]: No RealSense devices were found![0m
+[WARN] [0000000822.415538208] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[realsense2_camera_node-1] [33m[WARN] [0000000828.482008768] [camera.camera]: No RealSense devices were found![0m
+[WARN] [0000000832.415539584] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[realsense2_camera_node-1] [33m[WARN] [0000000834.571300736] [camera.camera]: No RealSense devices were found![0m
+[realsense2_camera_node-1] [33m[WARN] [0000000840.649339616] [camera.camera]: No RealSense devices were found![0m
+[WARN] [0000000842.415545600] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[realsense2_camera_node-1] [33m[WARN] [0000000846.730491584] [camera.camera]: No RealSense devices were found![0m
+[WARN] [0000000852.415551744] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[realsense2_camera_node-1] [33m[WARN] [0000000852.810489888] [camera.camera]: No RealSense devices were found![0m
+[realsense2_camera_node-1] [33m[WARN] [0000000858.890467296] [camera.camera]: No RealSense devices were found![0m
+[WARN] [0000000862.415548160] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[INFO] [0000000864.597264320] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[INFO] [0000000864.597397792] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[INFO] [0000000864.597517952] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[realsense2_camera_node-1] [0m[INFO] [0000000864.597286400] [rclcpp]: signal_handler(SIGINT/SIGTERM)[0m
+[INFO] [0000000901.980042944] [imu_filter_madgwick]: Starting ImuFilter
+[INFO] [0000000901.980524320] [imu_filter_madgwick]: Using dt computed from message headers
+[INFO] [0000000901.980590944] [imu_filter_madgwick]: The gravity vector is kept in the IMU message.
+[INFO] [0000000901.980716384] [imu_filter_madgwick]: Imu filter gain set to 0.100000
+[INFO] [0000000901.980765120] [imu_filter_madgwick]: Gyro drift bias set to 0.000000
+[INFO] [0000000901.980787840] [imu_filter_madgwick]: Magnetometer bias values: 0.000000 0.000000 0.000000
+[WARN] [0000000902.959620704] []: Old-style arguments are deprecated; see --help for new-style arguments
+[INFO] [0000000902.986487584] [static_transform_publisher_zuzTEASKHmEovxNL]: Spinning until stopped - publishing transform
+translation: ('0.000000', '0.000000', '0.000000')
+rotation: ('0.000000', '0.000000', '0.000000', '1.000000')
+from 'map' to 'odom'
+[WARN] [0000000911.986097088] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[INFO] [0000000918.928210208] [cs20_lidar_bridge]: CS20 bridge started | mono=/camera/camera/color/image_raw depth=/camera/camera/aligned_depth_to_color/image_raw range=/tof_sensor/range
+[WARN] [0000000921.986124704] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[WARN] [0000000931.985786240] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[WARN] [0000000941.985783104] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[WARN] [0000000951.985794272] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[WARN] [0000000961.985797184] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[WARN] [0000000971.986049376] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[WARN] [0000000981.985802560] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[WARN] [0000000991.985815872] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[WARN] [0000001001.985823040] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[WARN] [0000001011.985803776] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[WARN] [0000001021.985797536] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[WARN] [0000001031.985827296] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[WARN] [0000001041.985801120] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[WARN] [0000001051.985800928] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[WARN] [0000001061.985801952] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[WARN] [0000001071.985800288] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[WARN] [0000001081.985795648] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[WARN] [0000001091.985773760] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[WARN] [0000001101.985815232] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[WARN] [0000001111.985797728] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[WARN] [0000001121.985820992] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[WARN] [0000001131.985797408] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[WARN] [0000001141.985802784] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[WARN] [0000001151.985797536] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[WARN] [0000001161.985806816] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[WARN] [0000001171.985809824] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[INFO] [0000001178.091707136] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[INFO] [0000001178.091761152] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[INFO] [0000001178.091934848] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/usr/lib/python3.10/runpy.py", line 86, in _run_code
+    exec(code, run_globals)
+  File "/home/jetson123/Drone/optical_flow_cs20_lidar/cs20_lidar_bridge.py", line 277, in <module>
+    main()
+  File "/home/jetson123/Drone/optical_flow_cs20_lidar/cs20_lidar_bridge.py", line 267, in main
+    rclpy.spin(node)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/__init__.py", line 229, in spin
+    executor.spin_once()
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 808, in spin_once
+    self._spin_once_impl(timeout_sec)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 797, in _spin_once_impl
+    handler, entity, node = self.wait_for_ready_callbacks(timeout_sec=timeout_sec)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 780, in wait_for_ready_callbacks
+    return next(self._cb_iter)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 681, in _wait_for_ready_callbacks
+    raise ExternalShutdownException()
+rclpy.executors.ExternalShutdownException
+/home/jetson123/Drone/SynexensPythonSDK4_4.2.4.0_202504281506
+[INFO] [0000001200.657244448] [imu_filter_madgwick]: Starting ImuFilter
+[INFO] [0000001200.657749280] [imu_filter_madgwick]: Using dt computed from message headers
+[INFO] [0000001200.657807264] [imu_filter_madgwick]: The gravity vector is kept in the IMU message.
+[INFO] [0000001200.657920448] [imu_filter_madgwick]: Imu filter gain set to 0.100000
+[INFO] [0000001200.657961824] [imu_filter_madgwick]: Gyro drift bias set to 0.000000
+[INFO] [0000001200.657984608] [imu_filter_madgwick]: Magnetometer bias values: 0.000000 0.000000 0.000000
+[WARN] [0000001201.633483040] []: Old-style arguments are deprecated; see --help for new-style arguments
+[INFO] [0000001202.001426944] [static_transform_publisher_KKSbYYf0tGnt3jLT]: Spinning until stopped - publishing transform
+translation: ('0.000000', '0.000000', '0.000000')
+rotation: ('0.000000', '0.000000', '0.000000', '1.000000')
+from 'map' to 'odom'
+[WARN] [0000001210.665444480] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[INFO] [0000001217.070002368] [cs20_lidar_bridge]: CS20 bridge started | mono=/camera/camera/color/image_raw depth=/camera/camera/aligned_depth_to_color/image_raw range=/tof_sensor/range
+[WARN] [0000001220.665405280] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[WARN] [0000001230.665409632] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[WARN] [0000001240.665426848] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[WARN] [0000001250.665428000] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[WARN] [0000001260.665417888] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[WARN] [0000001270.665423168] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[WARN] [0000001280.665424768] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[WARN] [0000001290.665543424] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[WARN] [0000001300.665429248] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[INFO] [0000001307.976695808] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[INFO] [0000001307.976784512] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[INFO] [0000001307.977130016] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[INFO] [0000001340.288250208] [imu_filter_madgwick]: Starting ImuFilter
+[INFO] [0000001340.289204896] [imu_filter_madgwick]: Using dt computed from message headers
+[INFO] [0000001340.289270496] [imu_filter_madgwick]: The gravity vector is kept in the IMU message.
+[INFO] [0000001340.292825216] [imu_filter_madgwick]: Imu filter gain set to 0.100000
+[INFO] [0000001340.293244128] [imu_filter_madgwick]: Gyro drift bias set to 0.000000
+[INFO] [0000001340.293596096] [imu_filter_madgwick]: Magnetometer bias values: 0.000000 0.000000 0.000000
+[WARN] [0000001341.241304096] []: Old-style arguments are deprecated; see --help for new-style arguments
+[INFO] [0000001341.263597824] [static_transform_publisher_lJARIOPcab1sw4rB]: Spinning until stopped - publishing transform
+translation: ('0.000000', '0.000000', '0.000000')
+rotation: ('0.000000', '0.000000', '0.000000', '1.000000')
+from 'map' to 'odom'
+[WARN] [0000001350.319443520] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[INFO] [0000001356.885984800] [cs20_lidar_bridge]: CS20 bridge started | mono=/camera/camera/color/image_raw depth=/camera/camera/aligned_depth_to_color/image_raw range=/tof_sensor/range
+[WARN] [0000001360.319786208] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[WARN] [0000001370.319746624] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[WARN] [0000001380.319419360] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[WARN] [0000001390.319434624] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[WARN] [0000001400.319382656] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[WARN] [0000001410.319452160] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[WARN] [0000001420.319471392] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[WARN] [0000001430.319440384] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[WARN] [0000001440.319430944] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[WARN] [0000001450.319430944] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[WARN] [0000001460.319432320] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[WARN] [0000001470.319439168] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[WARN] [0000001480.319425312] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[WARN] [0000001490.319416064] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[WARN] [0000001500.319437472] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[WARN] [0000001510.319421344] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[WARN] [0000001520.319421664] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[WARN] [0000001530.319438720] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[WARN] [0000001540.319421696] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[INFO] [0000001545.907571872] [imu_filter_madgwick]: Parameter MOT_THST_HOVER set to 0.386260
+[WARN] [0000001550.319429216] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[WARN] [0000001560.319451808] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+[WARN] [0000001570.319430208] [imu_filter_madgwick]: Still waiting for data on topic imu/data_raw...
+                                                                                                                                                                                                                                                                                                        [WARN] [0000001415.836532832] []: Old-style arguments are deprecated; see --help for new-style arguments
+[INFO] [0000001415.861106368] [static_transform_publisher_ku5EQ1LrbAPjnid5]: Spinning until stopped - publishing transform
+translation: ('0.000000', '0.000000', '0.000000')
+rotation: ('0.000000', '0.000000', '0.000000', '1.000000')
+from 'map' to 'odom'
+[INFO] [0000001424.383968672] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/usr/lib/python3.10/runpy.py", line 86, in _run_code
+    exec(code, run_globals)
+  File "/home/jetson123/Drone/optical_flow_cs20_lidar/cs20_lidar_bridge.py", line 277, in <module>
+    main()
+  File "/home/jetson123/Drone/optical_flow_cs20_lidar/cs20_lidar_bridge.py", line 265, in main
+    node = CS20LidarBridge()
+  File "/home/jetson123/Drone/optical_flow_cs20_lidar/cs20_lidar_bridge.py", line 96, in __init__
+    self.timer = self.create_timer(1.0 / max(1.0, self.publish_hz), self._tick)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/node.py", line 1510, in create_timer
+    timer = Timer(callback, callback_group, timer_period_nsec, clock, context=self.context)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/timer.py", line 28, in __init__
+    self.__timer = _rclpy.Timer(
+rclpy._rclpy_pybind11.RCLError: failed to create timer: the given context is not valid, either rcl_init() was not called or rcl_shutdown() was called., at ./src/rcl/guard_condition.c:67
+/home/jetson123/Drone/SynexensPythonSDK4_4.2.4.0_202504281506
+[WARN] [0000001639.742804576] []: Old-style arguments are deprecated; see --help for new-style arguments
+[INFO] [0000001639.777282048] [static_transform_publisher_Pw7gm3kVqSJFAS04]: Spinning until stopped - publishing transform
+translation: ('0.000000', '0.000000', '0.000000')
+rotation: ('0.000000', '0.000000', '0.000000', '1.000000')
+from 'map' to 'odom'
+[INFO] [0000001652.450707072] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/usr/lib/python3.10/runpy.py", line 86, in _run_code
+    exec(code, run_globals)
+  File "/home/jetson123/Drone/optical_flow_cs20_lidar/cs20_lidar_bridge.py", line 277, in <module>
+    main()
+  File "/home/jetson123/Drone/optical_flow_cs20_lidar/cs20_lidar_bridge.py", line 265, in main
+    node = CS20LidarBridge()
+  File "/home/jetson123/Drone/optical_flow_cs20_lidar/cs20_lidar_bridge.py", line 96, in __init__
+    self.timer = self.create_timer(1.0 / max(1.0, self.publish_hz), self._tick)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/node.py", line 1510, in create_timer
+    timer = Timer(callback, callback_group, timer_period_nsec, clock, context=self.context)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/timer.py", line 28, in __init__
+    self.__timer = _rclpy.Timer(
+rclpy._rclpy_pybind11.RCLError: failed to create timer: the given context is not valid, either rcl_init() was not called or rcl_shutdown() was called., at ./src/rcl/guard_condition.c:67
+/home/jetson123/Drone/SynexensPythonSDK4_4.2.4.0_202504281506
+[WARN] [0000001681.285198848] []: Old-style arguments are deprecated; see --help for new-style arguments
+[INFO] [0000001681.308189536] [static_transform_publisher_3lULzJP7lXJNDWla]: Spinning until stopped - publishing transform
+translation: ('0.000000', '0.000000', '0.000000')
+rotation: ('0.000000', '0.000000', '0.000000', '1.000000')
+from 'map' to 'odom'
+[INFO] [0000001698.793479168] [cs20_lidar_bridge]: CS20 bridge started | mono=/camera/camera/color/image_raw depth=/camera/camera/aligned_depth_to_color/image_raw range=/tof_sensor/range
+Open video device failed
+Open video device failed
+Open video device failed
+Open video device failed
+ioctl(UVCIOC_CTRL_GET) FAILED (-1)
+ioctl(UVCIOC_CTRL_SET) FAILED (-1) 
+ioctl(UVCIOC_CTRL_SET) FAILED (-1) 
+ioctl(UVCIOC_CTRL_SET) FAILED (-1) 
+ioctl(UVCIOC_CTRL_SET) FAILED (-1) 
+ioctl(UVCIOC_CTRL_SET) FAILED (-1) 
+ioctl(UVCIOC_CTRL_SET) FAILED (-1) 
+ioctl(UVCIOC_CTRL_SET) FAILED (-1) 
+ioctl(UVCIOC_CTRL_SET) FAILED (-1) 
+ioctl(UVCIOC_CTRL_SET) FAILED (-1) 
+ioctl(UVCIOC_CTRL_SET) FAILED (-1) 
+ioctl(UVCIOC_CTRL_SET) FAILED (-1) 
+ioctl(UVCIOC_CTRL_SET) FAILED (-1) 
+ioctl(UVCIOC_CTRL_SET) FAILED (-1) 
+ioctl(UVCIOC_CTRL_SET) FAILED (-1) 
+ioctl(UVCIOC_CTRL_SET) FAILED (-1) 
+ioctl(UVCIOC_CTRL_SET) FAILED (-1) 
+ioctl(UVCIOC_CTRL_SET) FAILED (-1) 
+ioctl(UVCIOC_CTRL_SET) FAILED (-1) 
+ioctl(UVCIOC_CTRL_SET) FAILED (-1) 
+ioctl(UVCIOC_CTRL_SET) FAILED (-1) 
+ioctl(UVCIOC_CTRL_SET) FAILED (-1) 
+ioctl(UVCIOC_CTRL_SET) FAILED (-1) 
+ioctl(UVCIOC_CTRL_SET) FAILED (-1) 
+ioctl(UVCIOC_CTRL_SET) FAILED (-1) 
+[INFO] [0000001796.864296448] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[ WARN:0@117.304] global /home/yangsy/library/ThirdPart_build/opencv-4.6.0/modules/videoio/src/cap_v4l.cpp (814) requestBuffers VIDEOIO(V4L2:/dev/video0): failed VIDIOC_REQBUFS: errno=19 (No such device)
+[WARN] [0000001874.823336192] []: Old-style arguments are deprecated; see --help for new-style arguments
+[INFO] [0000001874.850291744] [static_transform_publisher_hbp7upuMWT7rOY3V]: Spinning until stopped - publishing transform
+translation: ('0.000000', '0.000000', '0.000000')
+rotation: ('0.000000', '0.000000', '0.000000', '1.000000')
+from 'map' to 'odom'
+[INFO] [0000001892.370152704] [cs20_lidar_bridge]: CS20 bridge started | mono=/camera/camera/color/image_raw depth=/camera/camera/aligned_depth_to_color/image_raw range=/tof_sensor/range

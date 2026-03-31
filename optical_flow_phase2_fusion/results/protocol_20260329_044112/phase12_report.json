@@ -1,0 +1,145 @@
+{
+  "protocol_dir": "/home/jetson123/Drone/protocol_20260329_044112",
+  "phase1_static": {
+    "verdict": "PASS",
+    "stats": {
+      "n": 194,
+      "q2_ratio": 1.0,
+      "vf_abs_mean": 0.0063554536082474225,
+      "vr_abs_mean": 0.0025050515463917525,
+      "vf_abs_max": 0.028111,
+      "vf_abs_p50": 0.004934,
+      "vf_abs_p95": 0.019355,
+      "vf_abs_p99": 0.026203,
+      "vr_abs_p95": 0.007554,
+      "vf_rms": 0.008570279175402042,
+      "vr_rms": 0.00336188764630702,
+      "vf_sigma_robust": 0.0044537304
+    },
+    "tests": [
+      {
+        "name": "minimum_samples",
+        "status": "PASS",
+        "value": 194.0,
+        "threshold": ">= 30",
+        "note": "Need enough samples for stable statistics"
+      },
+      {
+        "name": "q2_ratio",
+        "status": "PASS",
+        "value": 1.0,
+        "threshold": "> 0.50",
+        "note": "High-quality tracking support"
+      },
+      {
+        "name": "vf_mean_drift",
+        "status": "PASS",
+        "value": 0.0063554536082474225,
+        "threshold": "< 0.02 m/s",
+        "note": "Forward drift during static"
+      },
+      {
+        "name": "vr_mean_drift",
+        "status": "PASS",
+        "value": 0.0025050515463917525,
+        "threshold": "< 0.02 m/s",
+        "note": "Lateral drift during static"
+      },
+      {
+        "name": "vf_p95_drift",
+        "status": "PASS",
+        "value": 0.019355,
+        "threshold": "< 0.05 m/s",
+        "note": "Tail drift behavior"
+      },
+      {
+        "name": "vf_p99_guard",
+        "status": "PASS",
+        "value": 0.026203,
+        "threshold": "< 0.08 m/s",
+        "note": "Extra spike guard"
+      }
+    ],
+    "estimated_error": {
+      "static_drift_mps": 0.0063554536082474225,
+      "static_drift_pct_of_1mps": 0.6355453608247422,
+      "static_noise_rms_mps": 0.008570279175402042,
+      "static_noise_sigma_robust_mps": 0.0044537304
+    }
+  },
+  "phase2_translate": {
+    "verdict": "PASS",
+    "stats": {
+      "n": 205,
+      "q2_ratio": 0.9951219512195122,
+      "vf_abs_mean": 0.4155700292682927,
+      "vr_abs_mean": 0.182135,
+      "vf_abs_max": 2.265592,
+      "vf_abs_p50": 0.29489,
+      "vf_abs_p95": 1.398307,
+      "vf_abs_p99": 2.110819,
+      "vr_abs_p95": 0.621151,
+      "vf_rms": 0.5948074367889526,
+      "vr_rms": 0.3054891431415542,
+      "vf_sigma_robust": 0.3455644080000001
+    },
+    "tests": [
+      {
+        "name": "minimum_samples",
+        "status": "PASS",
+        "value": 205.0,
+        "threshold": ">= 30",
+        "note": "Need enough samples for stable statistics"
+      },
+      {
+        "name": "q2_ratio",
+        "status": "PASS",
+        "value": 0.9951219512195122,
+        "threshold": ">= 0.60",
+        "note": "High-quality tracking support"
+      },
+      {
+        "name": "vf_mean_response",
+        "status": "PASS",
+        "value": 0.4155700292682927,
+        "threshold": ">= 0.02 m/s",
+        "note": "Mean forward response"
+      },
+      {
+        "name": "vf_p95_response",
+        "status": "PASS",
+        "value": 1.398307,
+        "threshold": ">= 0.04 m/s",
+        "note": "P95 forward response"
+      },
+      {
+        "name": "forward_dominance",
+        "status": "PASS",
+        "value": 2.2816593695242138,
+        "threshold": "> 1.5",
+        "note": "Forward axis should dominate lateral"
+      },
+      {
+        "name": "outlier_heavy_guard",
+        "status": "PASS",
+        "value": 1.6202393322782478,
+        "threshold": "<= 6.0",
+        "note": "Reject spike-only behavior"
+      },
+      {
+        "name": "cross_axis_leakage",
+        "status": "PASS",
+        "value": 43.827751563482785,
+        "threshold": "<= 50%",
+        "note": "Estimated lateral leakage during translation"
+      }
+    ],
+    "estimated_error": {
+      "translate_cross_axis_error_pct": 43.827751563482785,
+      "translate_forward_rms_mps": 0.5948074367889526,
+      "translate_vf_p95_mps": 1.398307,
+      "translate_vf_p99_mps": 2.110819
+    }
+  },
+  "overall": "PASS"
+}

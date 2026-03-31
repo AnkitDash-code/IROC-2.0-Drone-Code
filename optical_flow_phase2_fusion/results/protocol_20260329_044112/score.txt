@@ -1,0 +1,5 @@
+Protocol scoring: /home/jetson123/Drone/protocol_20260329_044112
+- phase1_static: PASS | n=194 | q2=1.00 | vf_mean=0.0064 | vr_mean=0.0025 | vf_p95=0.0193 | static jitter vf=0.0064, vr=0.0025, vf_p95=0.0193, q2=1.00
+- phase2_translate: PASS | n=205 | q2=1.00 | vf_mean=0.4156 | vr_mean=0.1821 | vf_p95=1.0906 | translation response vf_mean=0.4156, vf_p95=1.0906, vf_max=2.2656, vr_mean=0.1821, q2=1.00
+- phase3_tilt: PASS | n=195 | q2=0.99 | vf_mean=0.0166 | vr_mean=0.0122 | vf_p95=0.0487 | tilt leakage vf_mean=0.0166, vf_p95=0.0487, pitch_rate_p95=11.72 dps
+Overall: PASS

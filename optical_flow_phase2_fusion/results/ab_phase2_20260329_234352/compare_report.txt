@@ -1,0 +1,14 @@
+Standalone: /home/jetson123/Drone/ab_phase2_20260329_234352/standalone_route.csv
+Fusion: /home/jetson123/Drone/ab_phase2_20260329_234352/fusion_route.csv
+
+n                standalone=45.000000 fusion=282.000000 delta=+526.67%
+path_len_m       standalone=1.414791 fusion=2.717726 delta=+92.09%
+net_disp_m       standalone=0.255903 fusion=1.678273 delta=+555.82%
+path_over_net    standalone=5.528628 fusion=1.619359 delta=-70.71%
+step_p95_m       standalone=0.128342 fusion=0.044820 delta=-65.08%
+step_max_m       standalone=0.233102 fusion=0.080001 delta=-65.68%
+tiny_step_frac   standalone=0.204545 fusion=0.231317 delta=+13.09%
+big_step_frac    standalone=0.068182 fusion=0.000000 delta=-100.00%
+
+Better-if-lower metrics: path_over_net, step_p95_m, step_max_m, big_step_frac
+Better-if-higher metric: net_disp_m (if commanded motion was similar)

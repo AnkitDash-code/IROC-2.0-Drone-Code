@@ -1,0 +1,33 @@
+Phase1+Phase2 Test Report: /home/jetson123/Drone/protocol_20260329_044112
+Overall: PASS
+
+[phase1_static] verdict=PASS
+stats: n=194 q2=1.000 vf_mean=0.0064 vr_mean=0.0025 vf_p95=0.0194 vf_p99=0.0262
+tests:
+- minimum_samples: PASS | value=194.0000 | threshold=>= 30 | Need enough samples for stable statistics
+- q2_ratio: PASS | value=1.0000 | threshold=> 0.50 | High-quality tracking support
+- vf_mean_drift: PASS | value=0.0064 | threshold=< 0.02 m/s | Forward drift during static
+- vr_mean_drift: PASS | value=0.0025 | threshold=< 0.02 m/s | Lateral drift during static
+- vf_p95_drift: PASS | value=0.0194 | threshold=< 0.05 m/s | Tail drift behavior
+- vf_p99_guard: PASS | value=0.0262 | threshold=< 0.08 m/s | Extra spike guard
+estimated_error:
+- static_drift_mps=0.006355
+- static_drift_pct_of_1mps=0.635545
+- static_noise_rms_mps=0.008570
+- static_noise_sigma_robust_mps=0.004454
+
+[phase2_translate] verdict=PASS
+stats: n=205 q2=0.995 vf_mean=0.4156 vr_mean=0.1821 vf_p95=1.3983 vf_p99=2.1108
+tests:
+- minimum_samples: PASS | value=205.0000 | threshold=>= 30 | Need enough samples for stable statistics
+- q2_ratio: PASS | value=0.9951 | threshold=>= 0.60 | High-quality tracking support
+- vf_mean_response: PASS | value=0.4156 | threshold=>= 0.02 m/s | Mean forward response
+- vf_p95_response: PASS | value=1.3983 | threshold=>= 0.04 m/s | P95 forward response
+- forward_dominance: PASS | value=2.2817 | threshold=> 1.5 | Forward axis should dominate lateral
+- outlier_heavy_guard: PASS | value=1.6202 | threshold=<= 6.0 | Reject spike-only behavior
+- cross_axis_leakage: PASS | value=43.8278 | threshold=<= 50% | Estimated lateral leakage during translation
+estimated_error:
+- translate_cross_axis_error_pct=43.827752
+- translate_forward_rms_mps=0.594807
+- translate_vf_p95_mps=1.398307
+- translate_vf_p99_mps=2.110819

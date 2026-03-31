@@ -1,0 +1,225 @@
+[protocol] output: /home/jetson123/Drone/protocol_20260329_044112
+[protocol] terminal transcript: /home/jetson123/Drone/protocol_20260329_044112/run_terminal.log
+[protocol] checking range topic activity...
+[protocol] no active range input on /d455/test/range; starting temporary 1.0 m publisher
+[protocol] checking imu topic activity...
+[protocol] warning: no IMU data on /imu/data; pitch diagnostics may be unavailable
+[protocol] phase=phase1_static duration=12s
+[protocol] csv=/home/jetson123/Drone/protocol_20260329_044112/phase1_static.csv
+[protocol] video=/home/jetson123/Drone/protocol_20260329_044112/phase1_static_debug.mp4
+[operator] perform now: phase1_static
+[INFO] [1774739476.386668215] [d455_ipm_lk_velocity_node]: D455 IPM LK Velocity Node initialized
+[INFO] [1774739476.387494292] [d455_ipm_lk_velocity_node]: Topics: image=/camera/camera/color/image_raw, camera_info=/camera/camera/color/camera_info, range=/d455/test/range, output=/d455/ipm_lk/velocity
+[INFO] [1774739476.388116106] [d455_ipm_lk_velocity_node]: Intrinsics init: fx=386.480, fy=386.050, cx=330.830, cy=247.260
+[INFO] [1774739476.388722906] [d455_ipm_lk_velocity_node]: Filter params: blur=7 feature_q=0.020 min_dist=10 lk_win=21 stationary_flow_px=0.350 flow_mad_k=3.00
+[INFO] [1774739476.389331562] [d455_ipm_lk_velocity_node]: Tilt=59.76 deg (sin=0.86392)
+[INFO] [1774739476.389926131] [d455_ipm_lk_velocity_node]: IPM homography matrix:
+[INFO] [1774739476.391199375] [d455_ipm_lk_velocity_node]: [[ -0.806522  -1.595761 765.965217]
+ [ -0.        -2.765217 940.173913]
+ [ -0.        -0.003764   1.      ]]
+[INFO] [1774739476.399015569] [d455_ipm_lk_deep_test_monitor]: Deep test monitor started
+[INFO] [1774739476.399928313] [d455_ipm_lk_deep_test_monitor]: subscribers: image=/camera/camera/color/image_raw, range=/d455/test/range, imu=/imu/data, twist=/d455/ipm_lk/velocity, quality=/d455_ipm_lk_velocity_node/quality
+[INFO] [1774739476.400540587] [d455_ipm_lk_deep_test_monitor]: CSV logging: /home/jetson123/Drone/protocol_20260329_044112/phase1_static.csv
+[INFO] [1774739476.401106182] [d455_ipm_lk_deep_test_monitor]: Video logging: /home/jetson123/Drone/protocol_20260329_044112/phase1_static_debug.mp4
+[INFO] [1774739476.402309920] [d455_ipm_lk_velocity_node]: CameraInfo received. Using hardware intrinsics: fx=387.007, fy=386.570, cx=330.827, cy=247.261
+[INFO] [1774739476.445795235] [d455_ipm_lk_velocity_node]: safety_zero reason=bootstrap quality=MEDIUM
+[INFO] [1774739476.860836700] [d455_ipm_lk_deep_test_monitor]: deep_test t=1774739476.749 alt=1.00m pitch=-1.94deg pr=+4.62deg/s vf=+0.002 vr=-0.002 Q=GREEN(HIGH) tracked=267 medMag=0.857 angleStd=111.52 magCV=1.126 corr(vf,pitch)=+0.000 corr(vf,pitchRate)=+0.000 tiltLeakRatio=0.000
+[WARN] [1774739476.861814085] [d455_ipm_lk_deep_test_monitor]: Vector field looks swirly/unstable (high angle std). Possible reflection/noise; consider stronger blur or better floor texture.
+[INFO] [1774739477.373304070] [d455_ipm_lk_velocity_node]: flow_status tracks=55 dt=0.0334s alt=1.000m dpx=+0.028 dpy=+0.873 v_forward=+0.020m/s v_right=-0.002m/s quality=HIGH
+[INFO] [1774739477.439846509] [d455_ipm_lk_deep_test_monitor]: deep_test t=1774739477.316 alt=1.00m pitch=-1.90deg pr=-0.98deg/s vf=-0.011 vr=-0.002 Q=GREEN(HIGH) tracked=293 medMag=0.815 angleStd=89.87 magCV=1.000 corr(vf,pitch)=+0.000 corr(vf,pitchRate)=+0.000 tiltLeakRatio=0.000
+[WARN] [1774739477.441260847] [d455_ipm_lk_deep_test_monitor]: Vector field looks swirly/unstable (high angle std). Possible reflection/noise; consider stronger blur or better floor texture.
+[INFO] [1774739477.927061450] [d455_ipm_lk_deep_test_monitor]: deep_test t=1774739477.817 alt=1.00m pitch=-1.96deg pr=+5.26deg/s vf=+0.022 vr=+0.002 Q=GREEN(HIGH) tracked=296 medMag=0.836 angleStd=92.50 magCV=1.252 corr(vf,pitch)=-0.031 corr(vf,pitchRate)=-0.033 tiltLeakRatio=0.000
+[WARN] [1774739477.929773014] [d455_ipm_lk_deep_test_monitor]: Vector field looks swirly/unstable (high angle std). Possible reflection/noise; consider stronger blur or better floor texture.
+[INFO] [1774739478.445029297] [d455_ipm_lk_velocity_node]: flow_status tracks=52 dt=0.0667s alt=1.000m dpx=+0.010 dpy=-0.619 v_forward=-0.001m/s v_right=+0.006m/s quality=HIGH
+[INFO] [1774739478.484455240] [d455_ipm_lk_deep_test_monitor]: deep_test t=1774739478.352 alt=1.00m pitch=-1.89deg pr=-4.16deg/s vf=+0.014 vr=+0.009 Q=GREEN(HIGH) tracked=291 medMag=0.584 angleStd=97.35 magCV=1.153 corr(vf,pitch)=+0.010 corr(vf,pitchRate)=-0.073 tiltLeakRatio=0.000
+[INFO] [1774739479.014240928] [d455_ipm_lk_deep_test_monitor]: deep_test t=1774739478.919 alt=1.00m pitch=-1.85deg pr=+1.80deg/s vf=+0.015 vr=+0.005 Q=GREEN(HIGH) tracked=297 medMag=0.821 angleStd=107.14 magCV=1.046 corr(vf,pitch)=+0.030 corr(vf,pitchRate)=-0.001 tiltLeakRatio=0.000
+[WARN] [1774739479.018571925] [d455_ipm_lk_deep_test_monitor]: Vector field looks swirly/unstable (high angle std). Possible reflection/noise; consider stronger blur or better floor texture.
+[INFO] [1774739479.503196132] [d455_ipm_lk_velocity_node]: flow_status tracks=51 dt=0.0667s alt=1.000m dpx=-0.045 dpy=-0.246 v_forward=-0.006m/s v_right=-0.000m/s quality=HIGH
+[INFO] [1774739479.563349297] [d455_ipm_lk_deep_test_monitor]: deep_test t=1774739479.453 alt=1.00m pitch=-1.84deg pr=-0.89deg/s vf=-0.006 vr=-0.000 Q=GREEN(HIGH) tracked=296 medMag=0.641 angleStd=105.49 magCV=1.168 corr(vf,pitch)=-0.013 corr(vf,pitchRate)=+0.001 tiltLeakRatio=0.000
+[INFO] [1774739480.133678864] [d455_ipm_lk_deep_test_monitor]: deep_test t=1774739479.987 alt=1.00m pitch=-1.94deg pr=-3.66deg/s vf=+0.004 vr=-0.000 Q=GREEN(HIGH) tracked=300 medMag=0.572 angleStd=87.61 magCV=1.333 corr(vf,pitch)=-0.023 corr(vf,pitchRate)=-0.009 tiltLeakRatio=0.000
+[INFO] [1774739480.573463670] [d455_ipm_lk_velocity_node]: flow_status tracks=51 dt=0.0667s alt=1.000m dpx=-0.149 dpy=+0.471 v_forward=+0.010m/s v_right=+0.005m/s quality=HIGH
+[INFO] [1774739480.680397302] [d455_ipm_lk_deep_test_monitor]: deep_test t=1774739480.554 alt=1.00m pitch=-1.85deg pr=+2.16deg/s vf=+0.010 vr=+0.005 Q=GREEN(HIGH) tracked=245 medMag=2.276 angleStd=92.43 magCV=1.404 corr(vf,pitch)=+0.005 corr(vf,pitchRate)=+0.011 tiltLeakRatio=0.000
+[WARN] [1774739480.682808747] [d455_ipm_lk_deep_test_monitor]: Vector field looks swirly/unstable (high angle std). Possible reflection/noise; consider stronger blur or better floor texture.
+[INFO] [1774739481.222118363] [d455_ipm_lk_deep_test_monitor]: deep_test t=1774739481.088 alt=1.00m pitch=-1.86deg pr=+1.97deg/s vf=-0.002 vr=-0.003 Q=GREEN(HIGH) tracked=249 medMag=3.495 angleStd=84.82 magCV=1.321 corr(vf,pitch)=+0.005 corr(vf,pitchRate)=+0.017 tiltLeakRatio=0.000
+[WARN] [1774739481.223164967] [d455_ipm_lk_deep_test_monitor]: Vector field looks swirly/unstable (high angle std). Possible reflection/noise; consider stronger blur or better floor texture.
+[INFO] [1774739481.599241391] [d455_ipm_lk_velocity_node]: flow_status tracks=48 dt=0.0667s alt=1.000m dpx=+0.265 dpy=-0.505 v_forward=-0.007m/s v_right=-0.005m/s quality=HIGH
+[INFO] [1774739481.747254784] [d455_ipm_lk_deep_test_monitor]: deep_test t=1774739481.655 alt=1.00m pitch=-1.90deg pr=+4.40deg/s vf=-0.003 vr=-0.003 Q=GREEN(HIGH) tracked=229 medMag=0.657 angleStd=95.00 magCV=1.251 corr(vf,pitch)=+0.040 corr(vf,pitchRate)=+0.031 tiltLeakRatio=0.000
+[INFO] [1774739482.268305836] [d455_ipm_lk_deep_test_monitor]: deep_test t=1774739482.155 alt=1.00m pitch=-1.85deg pr=+1.80deg/s vf=-0.000 vr=-0.005 Q=GREEN(HIGH) tracked=217 medMag=1.537 angleStd=86.71 magCV=1.732 corr(vf,pitch)=+0.070 corr(vf,pitchRate)=-0.039 tiltLeakRatio=0.000
+[WARN] [1774739482.269348149] [d455_ipm_lk_deep_test_monitor]: Vector field looks swirly/unstable (high angle std). Possible reflection/noise; consider stronger blur or better floor texture.
+[INFO] [1774739482.652843897] [d455_ipm_lk_velocity_node]: flow_status tracks=48 dt=0.0667s alt=1.000m dpx=-0.122 dpy=-0.767 v_forward=-0.009m/s v_right=+0.001m/s quality=HIGH
+[INFO] [1774739482.804660375] [d455_ipm_lk_deep_test_monitor]: deep_test t=1774739482.689 alt=1.00m pitch=-1.89deg pr=-1.00deg/s vf=-0.003 vr=+0.000 Q=GREEN(HIGH) tracked=281 medMag=1.528 angleStd=87.38 magCV=1.717 corr(vf,pitch)=+0.060 corr(vf,pitchRate)=-0.051 tiltLeakRatio=0.000
+[WARN] [1774739482.808718883] [d455_ipm_lk_deep_test_monitor]: Vector field looks swirly/unstable (high angle std). Possible reflection/noise; consider stronger blur or better floor texture.
+[INFO] [1774739483.312539276] [d455_ipm_lk_deep_test_monitor]: deep_test t=1774739483.190 alt=1.00m pitch=-1.90deg pr=-4.27deg/s vf=+0.005 vr=-0.001 Q=GREEN(HIGH) tracked=289 medMag=1.351 angleStd=95.58 magCV=2.103 corr(vf,pitch)=+0.047 corr(vf,pitchRate)=-0.075 tiltLeakRatio=0.000
+[WARN] [1774739483.313447826] [d455_ipm_lk_deep_test_monitor]: Vector field looks swirly/unstable (high angle std). Possible reflection/noise; consider stronger blur or better floor texture.
+[INFO] [1774739483.709170228] [d455_ipm_lk_velocity_node]: flow_status tracks=62 dt=0.0667s alt=1.000m dpx=-0.203 dpy=+0.113 v_forward=+0.005m/s v_right=+0.002m/s quality=HIGH
+[INFO] [1774739483.813367357] [d455_ipm_lk_deep_test_monitor]: deep_test t=1774739483.723 alt=1.00m pitch=-1.86deg pr=-2.59deg/s vf=+0.005 vr=+0.002 Q=GREEN(HIGH) tracked=300 medMag=0.469 angleStd=105.18 magCV=1.409 corr(vf,pitch)=+0.042 corr(vf,pitchRate)=-0.075 tiltLeakRatio=0.000
+[INFO] [1774739484.351060901] [d455_ipm_lk_deep_test_monitor]: deep_test t=1774739484.257 alt=1.00m pitch=-1.87deg pr=+0.77deg/s vf=-0.001 vr=-0.001 Q=GREEN(HIGH) tracked=286 medMag=1.207 angleStd=94.58 magCV=1.930 corr(vf,pitch)=+0.028 corr(vf,pitchRate)=-0.070 tiltLeakRatio=0.000
+[WARN] [1774739484.352206145] [d455_ipm_lk_deep_test_monitor]: Vector field looks swirly/unstable (high angle std). Possible reflection/noise; consider stronger blur or better floor texture.
+[INFO] [1774739484.796659909] [d455_ipm_lk_velocity_node]: flow_status tracks=49 dt=0.0667s alt=1.000m dpx=+0.005 dpy=-0.863 v_forward=-0.009m/s v_right=+0.001m/s quality=HIGH
+[INFO] [1774739484.858849036] [d455_ipm_lk_deep_test_monitor]: deep_test t=1774739484.758 alt=1.00m pitch=-1.88deg pr=+0.73deg/s vf=-0.009 vr=+0.001 Q=GREEN(HIGH) tracked=300 medMag=0.867 angleStd=104.97 magCV=1.528 corr(vf,pitch)=+0.052 corr(vf,pitchRate)=-0.071 tiltLeakRatio=0.000
+[WARN] [1774739484.861224527] [d455_ipm_lk_deep_test_monitor]: Vector field looks swirly/unstable (high angle std). Possible reflection/noise; consider stronger blur or better floor texture.
+[INFO] [1774739485.376398818] [d455_ipm_lk_deep_test_monitor]: deep_test t=1774739485.258 alt=1.00m pitch=-1.88deg pr=+3.36deg/s vf=-0.010 vr=-0.002 Q=GREEN(HIGH) tracked=264 medMag=1.548 angleStd=90.77 magCV=1.649 corr(vf,pitch)=+0.058 corr(vf,pitchRate)=-0.081 tiltLeakRatio=0.000
+[WARN] [1774739485.378175802] [d455_ipm_lk_deep_test_monitor]: Vector field looks swirly/unstable (high angle std). Possible reflection/noise; consider stronger blur or better floor texture.
+[INFO] [1774739485.841597861] [d455_ipm_lk_velocity_node]: flow_status tracks=50 dt=0.0667s alt=1.000m dpx=-0.344 dpy=-0.060 v_forward=-0.001m/s v_right=+0.004m/s quality=HIGH
+[INFO] [1774739485.878765075] [d455_ipm_lk_deep_test_monitor]: deep_test t=1774739485.759 alt=1.00m pitch=-1.86deg pr=+2.98deg/s vf=-0.001 vr=-0.001 Q=GREEN(HIGH) tracked=250 medMag=0.773 angleStd=108.94 magCV=1.034 corr(vf,pitch)=+0.046 corr(vf,pitchRate)=-0.072 tiltLeakRatio=0.000
+[INFO] [1774739486.406922110] [d455_ipm_lk_deep_test_monitor]: deep_test t=1774739486.292 alt=1.00m pitch=-1.87deg pr=+2.07deg/s vf=+0.001 vr=+0.000 Q=GREEN(HIGH) tracked=233 medMag=0.583 angleStd=93.27 magCV=1.489 corr(vf,pitch)=+0.041 corr(vf,pitchRate)=-0.066 tiltLeakRatio=0.000
+[INFO] [1774739486.872190436] [d455_ipm_lk_velocity_node]: flow_status tracks=49 dt=0.0667s alt=1.000m dpx=+0.038 dpy=-0.063 v_forward=-0.003m/s v_right=-0.000m/s quality=HIGH
+[INFO] [1774739486.913334229] [d455_ipm_lk_deep_test_monitor]: deep_test t=1774739486.826 alt=1.00m pitch=-1.90deg pr=-0.54deg/s vf=-0.003 vr=-0.000 Q=GREEN(HIGH) tracked=260 medMag=0.593 angleStd=92.52 magCV=1.144 corr(vf,pitch)=+0.043 corr(vf,pitchRate)=-0.060 tiltLeakRatio=0.000
+[WARN] [1774739487.456252113] [d455_ipm_lk_deep_test_monitor]: Debug image publish failed: Failed to publish: publisher's context is invalid, at ./src/rcl/publisher.c:389
+Failed to publish log message to rosout: publisher's context is invalid, at ./src/rcl/publisher.c:389
+[INFO] [1774739487.468562585] [d455_ipm_lk_deep_test_monitor]: deep_test t=1774739487.360 alt=1.00m pitch=-1.90deg pr=-0.61deg/s vf=+0.010 vr=+0.000 Q=GREEN(HIGH) tracked=215 medMag=0.630 angleStd=88.55 magCV=1.172 corr(vf,pitch)=+0.036 corr(vf,pitchRate)=-0.050 tiltLeakRatio=0.000
+Failed to publish log message to rosout: publisher's context is invalid, at ./src/rcl/publisher.c:389
+Traceback (most recent call last):
+  File "/home/jetson123/Drone/d455_ipm_lk_deep_test_monitor.py", line 553, in <module>
+    main()
+  File "/home/jetson123/Drone/d455_ipm_lk_deep_test_monitor.py", line 533, in main
+    executor.spin()
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 323, in spin
+    self.spin_once()
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 863, in spin_once
+    self._spin_once_impl(timeout_sec)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 844, in _spin_once_impl
+    handler, entity, node = self.wait_for_ready_callbacks(
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 780, in wait_for_ready_callbacks
+    return next(self._cb_iter)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 653, in _wait_for_ready_callbacks
+    wait_set = _rclpy.WaitSet(
+rclpy._rclpy_pybind11.RCLError: failed to initialize wait set: the given context is not valid, either rcl_init() was not called or rcl_shutdown() was called., at ./src/rcl/wait.c:130
+/home/jetson123/.local/lib/python3.10/site-packages/matplotlib/projections/__init__.py:63: UserWarning: Unable to import Axes3D. This may be due to multiple versions of Matplotlib being installed (e.g. as a system package and as a pip package). As a result, the 3D projection is not available.
+  warnings.warn("Unable to import Axes3D. This may be due to multiple versions of "
+Saved plot: /home/jetson123/Drone/protocol_20260329_044112/phase1_static_plot.png
+[protocol] phase=phase2_translate duration=12s
+[protocol] csv=/home/jetson123/Drone/protocol_20260329_044112/phase2_translate.csv
+[protocol] video=/home/jetson123/Drone/protocol_20260329_044112/phase2_translate_debug.mp4
+[operator] perform now: phase2_translate
+[INFO] [1774739491.656876431] [d455_ipm_lk_deep_test_monitor]: Deep test monitor started
+[INFO] [1774739491.657739166] [d455_ipm_lk_deep_test_monitor]: subscribers: image=/camera/camera/color/image_raw, range=/d455/test/range, imu=/imu/data, twist=/d455/ipm_lk/velocity, quality=/d455_ipm_lk_velocity_node/quality
+[INFO] [1774739491.658473229] [d455_ipm_lk_deep_test_monitor]: CSV logging: /home/jetson123/Drone/protocol_20260329_044112/phase2_translate.csv
+[INFO] [1774739491.659152449] [d455_ipm_lk_deep_test_monitor]: Video logging: /home/jetson123/Drone/protocol_20260329_044112/phase2_translate_debug.mp4
+[INFO] [1774739491.666162864] [d455_ipm_lk_velocity_node]: D455 IPM LK Velocity Node initialized
+[INFO] [1774739491.667596156] [d455_ipm_lk_velocity_node]: Topics: image=/camera/camera/color/image_raw, camera_info=/camera/camera/color/camera_info, range=/d455/test/range, output=/d455/ipm_lk/velocity
+[INFO] [1774739491.668350069] [d455_ipm_lk_velocity_node]: Intrinsics init: fx=386.480, fy=386.050, cx=330.830, cy=247.260
+[INFO] [1774739491.669270753] [d455_ipm_lk_velocity_node]: Filter params: blur=7 feature_q=0.020 min_dist=10 lk_win=21 stationary_flow_px=0.350 flow_mad_k=3.00
+[INFO] [1774739491.669851876] [d455_ipm_lk_velocity_node]: Tilt=59.76 deg (sin=0.86392)
+[INFO] [1774739491.670406041] [d455_ipm_lk_velocity_node]: IPM homography matrix:
+[INFO] [1774739491.671753626] [d455_ipm_lk_velocity_node]: [[ -0.806522  -1.595761 765.965217]
+ [ -0.        -2.765217 940.173913]
+ [ -0.        -0.003764   1.      ]]
+[INFO] [1774739491.689915150] [d455_ipm_lk_velocity_node]: CameraInfo received. Using hardware intrinsics: fx=387.007, fy=386.570, cx=330.827, cy=247.261
+[INFO] [1774739491.713745523] [d455_ipm_lk_velocity_node]: safety_zero reason=bootstrap quality=MEDIUM
+[INFO] [1774739492.107718732] [d455_ipm_lk_deep_test_monitor]: deep_test t=1774739491.998 alt=1.00m pitch=-1.67deg pr=+0.68deg/s vf=+0.343 vr=-0.105 Q=GREEN(HIGH) tracked=169 medMag=12.077 angleStd=97.32 magCV=0.970 corr(vf,pitch)=+0.000 corr(vf,pitchRate)=+0.000 tiltLeakRatio=0.000
+[WARN] [1774739492.109552960] [d455_ipm_lk_deep_test_monitor]: Vector field looks swirly/unstable (high angle std). Possible reflection/noise; consider stronger blur or better floor texture.
+[INFO] [1774739492.628893461] [d455_ipm_lk_deep_test_monitor]: deep_test t=1774739492.498 alt=1.00m pitch=-2.06deg pr=+11.34deg/s vf=-0.207 vr=-0.217 Q=GREEN(HIGH) tracked=186 medMag=4.877 angleStd=70.37 magCV=1.294 corr(vf,pitch)=+0.000 corr(vf,pitchRate)=+0.000 tiltLeakRatio=0.000
+[INFO] [1774739492.636884622] [d455_ipm_lk_velocity_node]: flow_status tracks=68 dt=0.0667s alt=1.000m dpx=+6.856 dpy=-5.089 v_forward=-0.191m/s v_right=-0.258m/s quality=HIGH
+[INFO] [1774739493.153854242] [d455_ipm_lk_deep_test_monitor]: deep_test t=1774739493.065 alt=1.00m pitch=-1.85deg pr=-0.35deg/s vf=+0.045 vr=-0.032 Q=GREEN(HIGH) tracked=179 medMag=22.713 angleStd=76.00 magCV=1.096 corr(vf,pitch)=+0.125 corr(vf,pitchRate)=-0.047 tiltLeakRatio=0.000
+[INFO] [1774739493.636310357] [d455_ipm_lk_velocity_node]: flow_status tracks=100 dt=0.0668s alt=1.000m dpx=+8.467 dpy=-10.943 v_forward=-0.246m/s v_right=-0.173m/s quality=HIGH
+[INFO] [1774739493.717919174] [d455_ipm_lk_deep_test_monitor]: deep_test t=1774739493.599 alt=1.00m pitch=-1.98deg pr=-1.48deg/s vf=-0.246 vr=-0.173 Q=GREEN(HIGH) tracked=50 medMag=30.328 angleStd=30.51 magCV=1.042 corr(vf,pitch)=+0.286 corr(vf,pitchRate)=-0.071 tiltLeakRatio=0.000
+[INFO] [1774739494.215359930] [d455_ipm_lk_deep_test_monitor]: deep_test t=1774739494.101 alt=1.00m pitch=-1.80deg pr=-0.37deg/s vf=-0.577 vr=-0.243 Q=GREEN(HIGH) tracked=49 medMag=27.640 angleStd=56.67 magCV=1.180 corr(vf,pitch)=+0.190 corr(vf,pitchRate)=+0.023 tiltLeakRatio=0.000
+[INFO] [1774739494.643700425] [d455_ipm_lk_velocity_node]: flow_status tracks=154 dt=0.0667s alt=1.000m dpx=+5.730 dpy=-12.432 v_forward=-0.046m/s v_right=-0.377m/s quality=HIGH
+[INFO] [1774739494.818559235] [d455_ipm_lk_deep_test_monitor]: deep_test t=1774739494.702 alt=1.00m pitch=-2.04deg pr=+2.52deg/s vf=+0.258 vr=-0.354 Q=GREEN(HIGH) tracked=265 medMag=19.715 angleStd=77.31 magCV=1.113 corr(vf,pitch)=-0.037 corr(vf,pitchRate)=+0.081 tiltLeakRatio=0.000
+[INFO] [1774739495.353031905] [d455_ipm_lk_deep_test_monitor]: deep_test t=1774739495.269 alt=1.00m pitch=-2.55deg pr=+8.64deg/s vf=-0.074 vr=+0.207 Q=GREEN(HIGH) tracked=177 medMag=30.256 angleStd=82.20 magCV=0.531 corr(vf,pitch)=-0.079 corr(vf,pitchRate)=+0.057 tiltLeakRatio=0.000
+[WARN] [1774739495.377057736] [d455_ipm_lk_deep_test_monitor]: Vector field looks swirly/unstable (high angle std). Possible reflection/noise; consider stronger blur or better floor texture.
+[INFO] [1774739495.699805910] [d455_ipm_lk_velocity_node]: flow_status tracks=67 dt=0.0667s alt=1.000m dpx=-12.478 dpy=+10.691 v_forward=-0.741m/s v_right=+0.830m/s quality=HIGH
+[INFO] [1774739495.863762343] [d455_ipm_lk_deep_test_monitor]: deep_test t=1774739495.769 alt=1.00m pitch=-1.65deg pr=-8.11deg/s vf=-1.407 vr=+0.621 Q=GREEN(HIGH) tracked=25 medMag=17.200 angleStd=122.17 magCV=0.988 corr(vf,pitch)=-0.489 corr(vf,pitchRate)=-0.028 tiltLeakRatio=0.000
+[WARN] [1774739495.865093120] [d455_ipm_lk_deep_test_monitor]: Vector field looks swirly/unstable (high angle std). Possible reflection/noise; consider stronger blur or better floor texture.
+[INFO] [1774739496.402134498] [d455_ipm_lk_deep_test_monitor]: deep_test t=1774739496.303 alt=1.00m pitch=-1.14deg pr=-9.20deg/s vf=-0.431 vr=+0.079 Q=GREEN(HIGH) tracked=26 medMag=18.021 angleStd=66.34 magCV=0.814 corr(vf,pitch)=-0.441 corr(vf,pitchRate)=-0.018 tiltLeakRatio=0.000
+[INFO] [1774739496.717120041] [d455_ipm_lk_velocity_node]: flow_status tracks=218 dt=0.0667s alt=1.000m dpx=-40.792 dpy=-66.252 v_forward=-1.703m/s v_right=+0.719m/s quality=HIGH
+[INFO] [1774739496.950710826] [d455_ipm_lk_deep_test_monitor]: deep_test t=1774739496.870 alt=1.00m pitch=-2.14deg pr=-2.22deg/s vf=-0.740 vr=+0.504 Q=GREEN(HIGH) tracked=269 medMag=39.587 angleStd=94.74 magCV=0.725 corr(vf,pitch)=-0.089 corr(vf,pitchRate)=+0.011 tiltLeakRatio=0.000
+[WARN] [1774739496.952107427] [d455_ipm_lk_deep_test_monitor]: Vector field looks swirly/unstable (high angle std). Possible reflection/noise; consider stronger blur or better floor texture.
+[INFO] [1774739497.466308047] [d455_ipm_lk_deep_test_monitor]: deep_test t=1774739497.370 alt=1.00m pitch=-1.65deg pr=-6.62deg/s vf=-0.808 vr=+0.100 Q=GREEN(HIGH) tracked=84 medMag=19.510 angleStd=98.61 magCV=0.842 corr(vf,pitch)=-0.076 corr(vf,pitchRate)=+0.012 tiltLeakRatio=0.000
+[WARN] [1774739497.467161690] [d455_ipm_lk_deep_test_monitor]: Vector field looks swirly/unstable (high angle std). Possible reflection/noise; consider stronger blur or better floor texture.
+[INFO] [1774739497.765774890] [d455_ipm_lk_velocity_node]: flow_status tracks=57 dt=0.0667s alt=1.000m dpx=+0.084 dpy=+0.068 v_forward=-0.136m/s v_right=+0.005m/s quality=HIGH
+[INFO] [1774739498.004306416] [d455_ipm_lk_deep_test_monitor]: deep_test t=1774739497.904 alt=1.00m pitch=-1.68deg pr=-2.22deg/s vf=-0.085 vr=-0.012 Q=GREEN(HIGH) tracked=47 medMag=1.658 angleStd=88.26 magCV=1.708 corr(vf,pitch)=-0.073 corr(vf,pitchRate)=+0.014 tiltLeakRatio=0.000
+[WARN] [1774739498.005300481] [d455_ipm_lk_deep_test_monitor]: Vector field looks swirly/unstable (high angle std). Possible reflection/noise; consider stronger blur or better floor texture.
+[INFO] [1774739498.559651438] [d455_ipm_lk_deep_test_monitor]: deep_test t=1774739498.438 alt=1.00m pitch=-1.76deg pr=+1.18deg/s vf=+0.370 vr=-0.285 Q=GREEN(HIGH) tracked=181 medMag=27.786 angleStd=63.14 magCV=0.788 corr(vf,pitch)=-0.065 corr(vf,pitchRate)=-0.024 tiltLeakRatio=0.000
+[INFO] [1774739498.783110151] [d455_ipm_lk_velocity_node]: flow_status tracks=55 dt=0.0667s alt=1.000m dpx=+2.726 dpy=-4.271 v_forward=+0.422m/s v_right=-0.155m/s quality=HIGH
+[INFO] [1774739499.097648494] [d455_ipm_lk_deep_test_monitor]: deep_test t=1774739499.005 alt=1.00m pitch=-1.97deg pr=+3.96deg/s vf=+0.328 vr=-0.113 Q=GREEN(HIGH) tracked=30 medMag=29.828 angleStd=85.14 magCV=0.998 corr(vf,pitch)=-0.047 corr(vf,pitchRate)=-0.046 tiltLeakRatio=0.000
+[WARN] [1774739499.101996619] [d455_ipm_lk_deep_test_monitor]: Vector field looks swirly/unstable (high angle std). Possible reflection/noise; consider stronger blur or better floor texture.
+[INFO] [1774739499.601530229] [d455_ipm_lk_deep_test_monitor]: deep_test t=1774739499.505 alt=1.00m pitch=-1.87deg pr=+5.05deg/s vf=+0.221 vr=+0.065 Q=GREEN(HIGH) tracked=72 medMag=21.358 angleStd=79.96 magCV=1.050 corr(vf,pitch)=-0.045 corr(vf,pitchRate)=-0.043 tiltLeakRatio=0.000
+[INFO] [1774739499.782786796] [d455_ipm_lk_velocity_node]: flow_status tracks=88 dt=0.0667s alt=1.000m dpx=+0.322 dpy=-9.534 v_forward=+0.279m/s v_right=+0.065m/s quality=HIGH
+[INFO] [1774739500.105539964] [d455_ipm_lk_deep_test_monitor]: deep_test t=1774739500.006 alt=1.00m pitch=-1.76deg pr=-10.13deg/s vf=+0.447 vr=+0.036 Q=GREEN(HIGH) tracked=34 medMag=10.350 angleStd=86.55 magCV=1.221 corr(vf,pitch)=-0.042 corr(vf,pitchRate)=-0.065 tiltLeakRatio=0.000
+[WARN] [1774739500.107896534] [d455_ipm_lk_deep_test_monitor]: Vector field looks swirly/unstable (high angle std). Possible reflection/noise; consider stronger blur or better floor texture.
+[INFO] [1774739500.606197175] [d455_ipm_lk_deep_test_monitor]: deep_test t=1774739500.506 alt=1.00m pitch=-1.94deg pr=+5.72deg/s vf=+0.721 vr=-0.045 Q=GREEN(HIGH) tracked=208 medMag=3.820 angleStd=70.03 magCV=1.967 corr(vf,pitch)=-0.041 corr(vf,pitchRate)=-0.067 tiltLeakRatio=0.000
+[INFO] [1774739500.834026297] [d455_ipm_lk_velocity_node]: flow_status tracks=116 dt=0.0667s alt=1.000m dpx=-0.095 dpy=-0.076 v_forward=+0.113m/s v_right=-0.001m/s quality=HIGH
+[INFO] [1774739501.140116674] [d455_ipm_lk_deep_test_monitor]: deep_test t=1774739501.073 alt=1.00m pitch=-1.94deg pr=-10.41deg/s vf=+0.018 vr=+0.002 Q=GREEN(HIGH) tracked=169 medMag=1.178 angleStd=104.13 magCV=2.909 corr(vf,pitch)=-0.044 corr(vf,pitchRate)=-0.062 tiltLeakRatio=0.000
+[WARN] [1774739501.145756612] [d455_ipm_lk_deep_test_monitor]: Vector field looks swirly/unstable (high angle std). Possible reflection/noise; consider stronger blur or better floor texture.
+[INFO] [1774739501.690669476] [d455_ipm_lk_deep_test_monitor]: deep_test t=1774739501.574 alt=1.00m pitch=-1.94deg pr=+3.91deg/s vf=+0.017 vr=+0.007 Q=GREEN(HIGH) tracked=139 medMag=0.719 angleStd=102.95 magCV=1.177 corr(vf,pitch)=-0.035 corr(vf,pitchRate)=-0.066 tiltLeakRatio=0.000
+[INFO] [1774739501.902497578] [d455_ipm_lk_velocity_node]: flow_status tracks=99 dt=0.0667s alt=1.000m dpx=-0.207 dpy=+0.298 v_forward=+0.015m/s v_right=+0.008m/s quality=HIGH
+[INFO] [1774739502.222578850] [d455_ipm_lk_deep_test_monitor]: deep_test t=1774739502.107 alt=1.00m pitch=-1.82deg pr=+3.52deg/s vf=+0.044 vr=+0.019 Q=GREEN(HIGH) tracked=292 medMag=1.318 angleStd=90.55 magCV=1.489 corr(vf,pitch)=-0.036 corr(vf,pitchRate)=-0.067 tiltLeakRatio=0.000
+[WARN] [1774739502.223579734] [d455_ipm_lk_deep_test_monitor]: Vector field looks swirly/unstable (high angle std). Possible reflection/noise; consider stronger blur or better floor texture.
+/home/jetson123/.local/lib/python3.10/site-packages/matplotlib/projections/__init__.py:63: UserWarning: Unable to import Axes3D. This may be due to multiple versions of Matplotlib being installed (e.g. as a system package and as a pip package). As a result, the 3D projection is not available.
+  warnings.warn("Unable to import Axes3D. This may be due to multiple versions of "
+Saved plot: /home/jetson123/Drone/protocol_20260329_044112/phase2_translate_plot.png
+[protocol] phase=phase3_tilt duration=12s
+[protocol] csv=/home/jetson123/Drone/protocol_20260329_044112/phase3_tilt.csv
+[protocol] video=/home/jetson123/Drone/protocol_20260329_044112/phase3_tilt_debug.mp4
+[operator] perform now: phase3_tilt
+[INFO] [1774739506.183860133] [d455_ipm_lk_deep_test_monitor]: Deep test monitor started
+[INFO] [1774739506.184638154] [d455_ipm_lk_deep_test_monitor]: subscribers: image=/camera/camera/color/image_raw, range=/d455/test/range, imu=/imu/data, twist=/d455/ipm_lk/velocity, quality=/d455_ipm_lk_velocity_node/quality
+[INFO] [1774739506.185255326] [d455_ipm_lk_deep_test_monitor]: CSV logging: /home/jetson123/Drone/protocol_20260329_044112/phase3_tilt.csv
+[INFO] [1774739506.185838434] [d455_ipm_lk_deep_test_monitor]: Video logging: /home/jetson123/Drone/protocol_20260329_044112/phase3_tilt_debug.mp4
+[INFO] [1774739506.216032595] [d455_ipm_lk_velocity_node]: D455 IPM LK Velocity Node initialized
+[INFO] [1774739506.216891328] [d455_ipm_lk_velocity_node]: Topics: image=/camera/camera/color/image_raw, camera_info=/camera/camera/color/camera_info, range=/d455/test/range, output=/d455/ipm_lk/velocity
+[INFO] [1774739506.217575574] [d455_ipm_lk_velocity_node]: Intrinsics init: fx=386.480, fy=386.050, cx=330.830, cy=247.260
+[INFO] [1774739506.218198318] [d455_ipm_lk_velocity_node]: Filter params: blur=7 feature_q=0.020 min_dist=10 lk_win=21 stationary_flow_px=0.350 flow_mad_k=3.00
+[INFO] [1774739506.218960458] [d455_ipm_lk_velocity_node]: Tilt=59.76 deg (sin=0.86392)
+[INFO] [1774739506.219642079] [d455_ipm_lk_velocity_node]: IPM homography matrix:
+[INFO] [1774739506.221002663] [d455_ipm_lk_velocity_node]: [[ -0.806522  -1.595761 765.965217]
+ [ -0.        -2.765217 940.173913]
+ [ -0.        -0.003764   1.      ]]
+[INFO] [1774739506.232591943] [d455_ipm_lk_velocity_node]: CameraInfo received. Using hardware intrinsics: fx=387.007, fy=386.570, cx=330.827, cy=247.261
+[INFO] [1774739506.287761306] [d455_ipm_lk_velocity_node]: safety_zero reason=bootstrap quality=MEDIUM
+[INFO] [1774739506.647475217] [d455_ipm_lk_deep_test_monitor]: deep_test t=1774739506.544 alt=1.00m pitch=-1.94deg pr=-10.38deg/s vf=+0.025 vr=+0.017 Q=GREEN(HIGH) tracked=166 medMag=2.195 angleStd=116.38 magCV=1.517 corr(vf,pitch)=+0.000 corr(vf,pitchRate)=+0.000 tiltLeakRatio=0.000
+[WARN] [1774739506.660748250] [d455_ipm_lk_deep_test_monitor]: Vector field looks swirly/unstable (high angle std). Possible reflection/noise; consider stronger blur or better floor texture.
+[INFO] [1774739507.153937153] [d455_ipm_lk_deep_test_monitor]: deep_test t=1774739507.044 alt=1.00m pitch=-0.76deg pr=-3.12deg/s vf=+0.027 vr=+0.054 Q=GREEN(HIGH) tracked=200 medMag=2.512 angleStd=86.57 magCV=1.123 corr(vf,pitch)=+0.000 corr(vf,pitchRate)=+0.000 tiltLeakRatio=0.000
+[WARN] [1774739507.154993553] [d455_ipm_lk_deep_test_monitor]: Vector field looks swirly/unstable (high angle std). Possible reflection/noise; consider stronger blur or better floor texture.
+[INFO] [1774739507.169179266] [d455_ipm_lk_velocity_node]: flow_status tracks=35 dt=0.1001s alt=1.000m dpx=-0.730 dpy=+1.247 v_forward=+0.030m/s v_right=+0.042m/s quality=HIGH
+[INFO] [1774739507.667501583] [d455_ipm_lk_deep_test_monitor]: deep_test t=1774739507.545 alt=1.00m pitch=-0.87deg pr=+7.69deg/s vf=+0.014 vr=+0.006 Q=GREEN(HIGH) tracked=223 medMag=3.230 angleStd=95.55 magCV=1.722 corr(vf,pitch)=-0.217 corr(vf,pitchRate)=-0.055 tiltLeakRatio=0.000
+[WARN] [1774739507.669419950] [d455_ipm_lk_deep_test_monitor]: Vector field looks swirly/unstable (high angle std). Possible reflection/noise; consider stronger blur or better floor texture.
+[INFO] [1774739508.191232854] [d455_ipm_lk_deep_test_monitor]: deep_test t=1774739508.112 alt=1.00m pitch=-0.86deg pr=-8.51deg/s vf=-0.008 vr=-0.009 Q=GREEN(HIGH) tracked=227 medMag=1.595 angleStd=80.66 magCV=0.955 corr(vf,pitch)=-0.342 corr(vf,pitchRate)=+0.065 tiltLeakRatio=0.000
+[WARN] [1774739508.194893755] [d455_ipm_lk_deep_test_monitor]: Vector field looks swirly/unstable (high angle std). Possible reflection/noise; consider stronger blur or better floor texture.
+[INFO] [1774739508.237975061] [d455_ipm_lk_velocity_node]: flow_status tracks=30 dt=0.0667s alt=1.000m dpx=+0.004 dpy=-0.874 v_forward=-0.019m/s v_right=-0.006m/s quality=HIGH
+[INFO] [1774739508.736887465] [d455_ipm_lk_deep_test_monitor]: deep_test t=1774739508.612 alt=1.00m pitch=-0.93deg pr=+9.57deg/s vf=+0.007 vr=-0.006 Q=GREEN(HIGH) tracked=234 medMag=1.053 angleStd=98.32 magCV=1.098 corr(vf,pitch)=-0.280 corr(vf,pitchRate)=+0.047 tiltLeakRatio=0.000
+[WARN] [1774739508.747664178] [d455_ipm_lk_deep_test_monitor]: Vector field looks swirly/unstable (high angle std). Possible reflection/noise; consider stronger blur or better floor texture.
+[INFO] [1774739509.265922442] [d455_ipm_lk_deep_test_monitor]: deep_test t=1774739509.146 alt=1.00m pitch=-0.61deg pr=+9.14deg/s vf=-0.000 vr=-0.006 Q=GREEN(HIGH) tracked=167 medMag=1.365 angleStd=101.92 magCV=1.370 corr(vf,pitch)=-0.300 corr(vf,pitchRate)=+0.001 tiltLeakRatio=0.000
+[WARN] [1774739509.267389863] [d455_ipm_lk_deep_test_monitor]: Vector field looks swirly/unstable (high angle std). Possible reflection/noise; consider stronger blur or better floor texture.
+[INFO] [1774739509.308467928] [d455_ipm_lk_velocity_node]: flow_status tracks=34 dt=0.0667s alt=1.000m dpx=-0.430 dpy=-0.249 v_forward=-0.001m/s v_right=+0.003m/s quality=HIGH
+[INFO] [1774739509.810324715] [d455_ipm_lk_deep_test_monitor]: deep_test t=1774739509.680 alt=1.00m pitch=-0.81deg pr=-7.29deg/s vf=-0.004 vr=+0.002 Q=GREEN(HIGH) tracked=170 medMag=1.897 angleStd=99.23 magCV=2.077 corr(vf,pitch)=-0.361 corr(vf,pitchRate)=+0.003 tiltLeakRatio=0.000
+[WARN] [1774739509.822008890] [d455_ipm_lk_deep_test_monitor]: Vector field looks swirly/unstable (high angle std). Possible reflection/noise; consider stronger blur or better floor texture.
+[INFO] [1774739510.298636269] [d455_ipm_lk_deep_test_monitor]: deep_test t=1774739510.180 alt=1.00m pitch=-1.57deg pr=+5.16deg/s vf=-0.002 vr=+0.005 Q=GREEN(HIGH) tracked=162 medMag=1.845 angleStd=73.26 magCV=1.820 corr(vf,pitch)=-0.297 corr(vf,pitchRate)=+0.009 tiltLeakRatio=0.000
+[INFO] [1774739510.439282941] [d455_ipm_lk_velocity_node]: flow_status tracks=31 dt=0.1336s alt=1.000m dpx=-1.189 dpy=+0.104 v_forward=-0.000m/s v_right=-0.004m/s quality=HIGH
+[INFO] [1774739510.848088010] [d455_ipm_lk_deep_test_monitor]: deep_test t=1774739510.748 alt=1.00m pitch=-2.00deg pr=-11.14deg/s vf=+0.016 vr=+0.004 Q=GREEN(HIGH) tracked=205 medMag=1.446 angleStd=78.66 magCV=1.295 corr(vf,pitch)=-0.312 corr(vf,pitchRate)=+0.031 tiltLeakRatio=0.000
+[INFO] [1774739511.482306560] [d455_ipm_lk_deep_test_monitor]: deep_test t=1774739511.348 alt=1.00m pitch=-1.89deg pr=-8.20deg/s vf=+0.011 vr=+0.008 Q=GREEN(HIGH) tracked=213 medMag=0.830 angleStd=105.05 magCV=1.407 corr(vf,pitch)=-0.369 corr(vf,pitchRate)=+0.046 tiltLeakRatio=0.000
+[INFO] [1774739511.491333888] [d455_ipm_lk_velocity_node]: flow_status tracks=20 dt=0.0667s alt=1.000m dpx=-0.865 dpy=+1.321 v_forward=+0.017m/s v_right=+0.013m/s quality=HIGH
+[WARN] [1774739511.492397267] [d455_ipm_lk_deep_test_monitor]: Vector field looks swirly/unstable (high angle std). Possible reflection/noise; consider stronger blur or better floor texture.
+[INFO] [1774739511.995378872] [d455_ipm_lk_deep_test_monitor]: deep_test t=1774739511.882 alt=1.00m pitch=-1.80deg pr=-9.19deg/s vf=+0.001 vr=-0.000 Q=GREEN(HIGH) tracked=210 medMag=0.948 angleStd=88.17 magCV=1.494 corr(vf,pitch)=-0.303 corr(vf,pitchRate)=+0.056 tiltLeakRatio=0.000
+[WARN] [1774739511.999307428] [d455_ipm_lk_deep_test_monitor]: Vector field looks swirly/unstable (high angle std). Possible reflection/noise; consider stronger blur or better floor texture.
+[INFO] [1774739512.495364644] [d455_ipm_lk_velocity_node]: flow_status tracks=39 dt=0.0667s alt=1.000m dpx=+2.508 dpy=+2.001 v_forward=+0.025m/s v_right=-0.031m/s quality=HIGH
+[INFO] [1774739512.496133348] [d455_ipm_lk_deep_test_monitor]: deep_test t=1774739512.383 alt=1.00m pitch=-2.05deg pr=+5.18deg/s vf=-0.010 vr=+0.004 Q=GREEN(HIGH) tracked=184 medMag=2.623 angleStd=41.29 magCV=0.798 corr(vf,pitch)=-0.240 corr(vf,pitchRate)=+0.041 tiltLeakRatio=0.000
+[INFO] [1774739513.045930221] [d455_ipm_lk_deep_test_monitor]: deep_test t=1774739512.950 alt=1.00m pitch=-2.45deg pr=+8.69deg/s vf=+0.045 vr=+0.009 Q=GREEN(HIGH) tracked=162 medMag=1.885 angleStd=67.25 magCV=1.562 corr(vf,pitch)=-0.311 corr(vf,pitchRate)=+0.046 tiltLeakRatio=0.000
+[INFO] [1774739513.547448855] [d455_ipm_lk_velocity_node]: flow_status tracks=33 dt=0.1001s alt=1.000m dpx=+0.145 dpy=+0.589 v_forward=+0.029m/s v_right=+0.009m/s quality=HIGH
+[INFO] [1774739513.642993724] [d455_ipm_lk_deep_test_monitor]: deep_test t=1774739513.550 alt=1.00m pitch=-3.09deg pr=-5.00deg/s vf=+0.029 vr=+0.009 Q=GREEN(HIGH) tracked=189 medMag=3.635 angleStd=81.42 magCV=2.238 corr(vf,pitch)=-0.499 corr(vf,pitchRate)=+0.085 tiltLeakRatio=0.000
+[WARN] [1774739513.644038438] [d455_ipm_lk_deep_test_monitor]: Vector field looks swirly/unstable (high angle std). Possible reflection/noise; consider stronger blur or better floor texture.
+[INFO] [1774739514.143390870] [d455_ipm_lk_deep_test_monitor]: deep_test t=1774739514.051 alt=1.00m pitch=-3.23deg pr=-10.34deg/s vf=+0.004 vr=+0.003 Q=GREEN(HIGH) tracked=154 medMag=1.752 angleStd=107.31 magCV=2.213 corr(vf,pitch)=-0.457 corr(vf,pitchRate)=+0.084 tiltLeakRatio=0.000
+[WARN] [1774739514.146581616] [d455_ipm_lk_deep_test_monitor]: Vector field looks swirly/unstable (high angle std). Possible reflection/noise; consider stronger blur or better floor texture.
+[INFO] [1774739514.552741106] [d455_ipm_lk_velocity_node]: flow_status tracks=20 dt=0.0667s alt=1.000m dpx=-0.861 dpy=+1.168 v_forward=+0.015m/s v_right=+0.012m/s quality=HIGH
+[INFO] [1774739514.704448442] [d455_ipm_lk_deep_test_monitor]: deep_test t=1774739514.585 alt=1.00m pitch=-3.76deg pr=-5.57deg/s vf=+0.015 vr=+0.012 Q=GREEN(HIGH) tracked=187 medMag=2.816 angleStd=95.16 magCV=1.700 corr(vf,pitch)=-0.391 corr(vf,pitchRate)=+0.075 tiltLeakRatio=0.000
+[WARN] [1774739514.714147337] [d455_ipm_lk_deep_test_monitor]: Vector field looks swirly/unstable (high angle std). Possible reflection/noise; consider stronger blur or better floor texture.
+[INFO] [1774739515.276226668] [d455_ipm_lk_deep_test_monitor]: deep_test t=1774739515.152 alt=1.00m pitch=-3.97deg pr=-0.13deg/s vf=+0.016 vr=+0.010 Q=GREEN(HIGH) tracked=147 medMag=1.115 angleStd=77.59 magCV=2.604 corr(vf,pitch)=-0.435 corr(vf,pitchRate)=+0.098 tiltLeakRatio=0.000
+[INFO] [1774739515.634291595] [d455_ipm_lk_velocity_node]: flow_status tracks=18 dt=0.0334s alt=1.000m dpx=-0.028 dpy=+0.120 v_forward=+0.013m/s v_right=+0.008m/s quality=HIGH
+[INFO] [1774739515.796134236] [d455_ipm_lk_deep_test_monitor]: deep_test t=1774739515.686 alt=1.00m pitch=-4.09deg pr=+8.92deg/s vf=+0.023 vr=-0.005 Q=GREEN(HIGH) tracked=140 medMag=1.060 angleStd=110.32 magCV=1.755 corr(vf,pitch)=-0.408 corr(vf,pitchRate)=+0.094 tiltLeakRatio=0.000
+[WARN] [1774739515.800076975] [d455_ipm_lk_deep_test_monitor]: Vector field looks swirly/unstable (high angle std). Possible reflection/noise; consider stronger blur or better floor texture.
+[INFO] [1774739516.309300803] [d455_ipm_lk_deep_test_monitor]: deep_test t=1774739516.186 alt=1.00m pitch=-3.72deg pr=+5.93deg/s vf=-0.022 vr=-0.013 Q=GREEN(HIGH) tracked=201 medMag=0.867 angleStd=66.24 magCV=1.403 corr(vf,pitch)=-0.304 corr(vf,pitchRate)=+0.041 tiltLeakRatio=0.000
+[INFO] [1774739516.685839539] [d455_ipm_lk_velocity_node]: flow_status tracks=20 dt=0.0667s alt=1.000m dpx=+0.017 dpy=-0.384 v_forward=-0.004m/s v_right=-0.004m/s quality=HIGH
+[INFO] [1774739516.850771467] [d455_ipm_lk_deep_test_monitor]: deep_test t=1774739516.753 alt=1.00m pitch=-3.46deg pr=-7.22deg/s vf=-0.008 vr=-0.017 Q=GREEN(HIGH) tracked=188 medMag=1.517 angleStd=44.20 magCV=1.227 corr(vf,pitch)=-0.209 corr(vf,pitchRate)=+0.060 tiltLeakRatio=0.000
+/home/jetson123/.local/lib/python3.10/site-packages/matplotlib/projections/__init__.py:63: UserWarning: Unable to import Axes3D. This may be due to multiple versions of Matplotlib being installed (e.g. as a system package and as a pip package). As a result, the 3D projection is not available.
+  warnings.warn("Unable to import Axes3D. This may be due to multiple versions of "
+Saved plot: /home/jetson123/Drone/protocol_20260329_044112/phase3_tilt_plot.png
+[protocol] complete
+Protocol scoring: /home/jetson123/Drone/protocol_20260329_044112
+- phase1_static: PASS | n=194 | q2=1.00 | vf_mean=0.0064 | vr_mean=0.0025 | vf_p95=0.0193 | static jitter vf=0.0064, vr=0.0025, vf_p95=0.0193, q2=1.00
+- phase2_translate: PASS | n=205 | q2=1.00 | vf_mean=0.4156 | vr_mean=0.1821 | vf_p95=1.0906 | translation response vf_mean=0.4156, vf_p95=1.0906, vf_max=2.2656, vr_mean=0.1821, q2=1.00
+- phase3_tilt: PASS | n=195 | q2=0.99 | vf_mean=0.0166 | vr_mean=0.0122 | vf_p95=0.0487 | tilt leakage vf_mean=0.0166, vf_p95=0.0487, pitch_rate_p95=11.72 dps
+Overall: PASS
+[protocol] score report: /home/jetson123/Drone/protocol_20260329_044112/score.txt
+[protocol] done. all artifacts in: /home/jetson123/Drone/protocol_20260329_044112

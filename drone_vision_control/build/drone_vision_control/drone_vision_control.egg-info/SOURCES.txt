@@ -8,11 +8,10 @@ build/drone_vision_control/drone_vision_control.egg-info/entry_points.txt
 build/drone_vision_control/drone_vision_control.egg-info/requires.txt
 build/drone_vision_control/drone_vision_control.egg-info/top_level.txt
 build/drone_vision_control/drone_vision_control.egg-info/zip-safe
-drone_vision_control/__init__.py
-drone_vision_control/collect_data.py
-drone_vision_control/corner_detection.py
-drone_vision_control/setup_project_directories.py
-drone_vision_control/vision_controller_node.py
+config/drone_visual_slam.yaml
+config/mavros_config.yaml
+launch/drone_slam_bringup_launch.py
+launch/drone_slam_launch.py
 resource/drone_vision_control
 test/test_copyright.py
 test/test_flake8.py
