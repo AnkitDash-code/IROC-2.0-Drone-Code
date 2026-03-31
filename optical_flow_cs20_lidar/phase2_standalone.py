@@ -11,22 +11,10 @@ import time
 
 from optical_flow_realsense import phase2_standalone as rs
 from .ir_optical_flow_estimator import CS20IROpticalFlowEstimator
-from .depth_icp_odometry import CS20DepthICPEstimator
 
 
 def _env_true(name: str, default: str = "0") -> bool:
     return os.environ.get(name, default) in ("1", "true", "True", "yes", "YES")
-
-
-def _cs20_no_imu_enabled() -> bool:
-    # Default to no-IMU in CS20 mode; set CS20_NO_IMU=0 to re-enable FCU IMU fusion.
-    return _env_true("CS20_NO_IMU", "1")
-
-
-def _cs20_direct_fcu_imu_enabled() -> bool:
-    # When FCU IMU is used, bypass startup calibration and fuse immediately.
-    # Set CS20_DIRECT_FCU_IMU=0 to restore original calibration-gated behavior.
-    return _env_true("CS20_DIRECT_FCU_IMU", "1")
 
 
 def cleanup_lidar():
@@ -45,21 +33,18 @@ def launch_hardware_lidar():
     )
     time.sleep(2)
 
-    if _cs20_no_imu_enabled():
-        print("CS20: no-imu mode enabled; skipping IMU relay/filter")
-    else:
-        print("CS20: relaying MAVROS IMU -> /camera/camera/imu ...")
-        os.system(
-            f"ros2 run topic_tools relay /mavros/imu/data /camera/camera/imu >> {rs.LOG_FILE} 2>&1 &"
-        )
-        time.sleep(1)
+    print("CS20: relaying MAVROS IMU -> /camera/camera/imu ...")
+    os.system(
+        f"ros2 run topic_tools relay /mavros/imu/data /camera/camera/imu >> {rs.LOG_FILE} 2>&1 &"
+    )
+    time.sleep(1)
 
-        print("CS20: launching IMU filter...")
-        os.system(
-            f"ros2 run imu_filter_madgwick imu_filter_madgwick_node --ros-args "
-            f"-r /imu/data_raw:=/camera/camera/imu -p use_mag:=false -p publish_tf:=false >> {rs.LOG_FILE} 2>&1 &"
-        )
-        time.sleep(1)
+    print("CS20: launching IMU filter...")
+    os.system(
+        f"ros2 run imu_filter_madgwick imu_filter_madgwick_node --ros-args "
+        f"-r /imu/data_raw:=/camera/camera/imu -p use_mag:=false -p publish_tf:=false >> {rs.LOG_FILE} 2>&1 &"
+    )
+    time.sleep(1)
 
     print("CS20: setting static transforms...")
     os.system(
@@ -73,13 +58,8 @@ def configure_cs20_runtime():
     os.environ["VO_BACKEND"] = "MSCKF"
     rs.VO_BACKEND = "MSCKF"
 
-    odom_mode = os.environ.get("CS20_ODOM_MODE", "OF").strip().upper()
-    if odom_mode == "ICP":
-        rs.MSCKFVelocityEstimator = CS20DepthICPEstimator
-        print("CS20 odometry mode: ICP depth odometry")
-    else:
-        rs.MSCKFVelocityEstimator = CS20IROpticalFlowEstimator
-        print("CS20 odometry mode: IR optical flow")
+    rs.MSCKFVelocityEstimator = CS20IROpticalFlowEstimator
+    print("CS20 odometry mode: IR optical flow")
 
     # Optional toggle to request GPU path in estimators that support it.
     # (falls back to CPU automatically when unavailable)
@@ -90,42 +70,73 @@ def configure_cs20_runtime():
 
     # Disable marker landing path in main CS20 runtime for now.
     rs.APRILTAG_ENABLED = False
+    rs.GLOBAL_RELOCALIZE_FALLBACK = False
 
-    # Optional LiDAR-only mode: bypass IMU calibration gate in reused Phase2 stack.
-    if _cs20_no_imu_enabled():
-        _orig_init = rs.IMUPreintegrator.__init__
+    # Disable Phase1-style feature bin relocalization path for pure optical flow mode.
+    class _NoOpFeatureExtractor:
+        def __init__(self, method="ORB", n_features=200):
+            del method, n_features
 
-        def _patched_init(self, *args, **kwargs):
-            _orig_init(self, *args, **kwargs)
-            self.gyro_bias_z = 0.0
-            self.bias_calibrated = True
-            self.spin_calibrated = True
-            self.calib_state = "ready"
-            self.yaw_deg = 0.0
+        def extract(self, image):
+            del image
+            return [], None
 
-        rs.IMUPreintegrator.__init__ = _patched_init
-        rs.USE_PIXHAWK_IMU_CORRECTION = False
-        rs.USE_MADGWICK_YAW = False
-        rs.USE_PIXHAWK_YAW_PRIMARY = False
-        rs.USE_PIXHAWK_RATE_CORRECTION = False
-        rs.USE_PIXHAWK_RATE_PRIMARY = False
-        rs.IMU_CALIBRATION_SAMPLES = 1
-        print("CS20 no-imu mode: IMU calibration bypass enabled")
-    elif _cs20_direct_fcu_imu_enabled():
-        _orig_init = rs.IMUPreintegrator.__init__
+        def match(self, desc1, desc2):
+            del desc1, desc2
+            return 0
 
-        def _patched_init_direct(self, *args, **kwargs):
-            _orig_init(self, *args, **kwargs)
-            self.gyro_bias_z = 0.0
-            self.bias_calibrated = True
-            self.spin_calibrated = True
-            self.calib_state = "ready"
-            self.yaw_deg = 0.0
+        def get_runtime_status(self):
+            return {
+                "backend": "DISABLED_NO_SLAM",
+                "ai_enabled": False,
+                "ai_fps": 0.0,
+                "extract_ms": 0.0,
+                "match_ms": 0.0,
+            }
 
-        rs.IMUPreintegrator.__init__ = _patched_init_direct
-        rs.IMU_CALIBRATION_SAMPLES = 1
-        # Keep FCU/Madgwick fusion toggles as configured in base Phase2; only remove gate.
-        print("CS20 direct FCU IMU mode: calibration gate bypassed, fusion starts immediately")
+    class _NoOpBin:
+        def __init__(self):
+            self.descriptors = []
+
+    class _NoOpCompassBinManager:
+        def __init__(self, n_bins=8):
+            self.n_bins = int(max(1, n_bins))
+            self.bin_width = 360.0 / float(self.n_bins)
+            self.bins = [_NoOpBin() for _ in range(self.n_bins)]
+
+        def heading_to_bin(self, heading_deg):
+            h = float(heading_deg) % 360.0
+            return int(h // self.bin_width) % self.n_bins
+
+        def store_features(self, heading_deg, keypoints, descriptors, timestamp):
+            del heading_deg, keypoints, descriptors, timestamp
+
+        def relocalize(self, heading_deg, query_descriptors, feature_extractor, query_rad_search=3):
+            del heading_deg, query_descriptors, feature_extractor, query_rad_search
+            return None, 0
+
+    rs.FeatureExtractor = _NoOpFeatureExtractor
+    rs.CompassBinManager = _NoOpCompassBinManager
+    print("CS20 pure optical-flow mode: relocalization/bin pipeline disabled")
+
+    # FCU IMU is mandatory in CS20 mode, but calibration gate is bypassed.
+    _orig_init = rs.IMUPreintegrator.__init__
+
+    def _patched_init_direct(self, *args, **kwargs):
+        _orig_init(self, *args, **kwargs)
+        self.gyro_bias_z = 0.0
+        self.bias_calibrated = True
+        self.spin_calibrated = True
+        self.calib_state = "ready"
+        self.yaw_deg = 0.0
+
+    rs.IMUPreintegrator.__init__ = _patched_init_direct
+    rs.IMU_CALIBRATION_SAMPLES = 1
+    rs.USE_PIXHAWK_IMU_CORRECTION = True
+    rs.USE_PIXHAWK_YAW_PRIMARY = True
+    rs.USE_PIXHAWK_RATE_CORRECTION = True
+    rs.USE_PIXHAWK_RATE_PRIMARY = True
+    print("CS20 FCU IMU mandatory mode: calibration removed, fusion starts immediately")
 
     # Keep using LiDAR bridge launch/cleanup hooks.
     rs.cleanup = cleanup_lidar

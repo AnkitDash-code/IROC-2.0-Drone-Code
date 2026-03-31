@@ -35,7 +35,13 @@ def index():
     const statusEl = document.getElementById('status');
     const wsUrl = '__PI_WS_URL__';
     const wsPublicPort = '__WS_PUBLIC_PORT__';
+    const STALE_FRAME_MS = 8000;
+    const REFRESH_WHEN_DOWN_MS = 10000;
     let lastUrl = null;
+    let ws = null;
+    let reconnectTimer = null;
+    let lastFrameAt = Date.now();
+    let lastConnectedAt = 0;
 
     function setStatus(msg, err=false) {
       statusEl.textContent = msg;
@@ -51,20 +57,43 @@ def index():
       return wsUrl;
     }
 
+    function scheduleReconnect(delayMs) {
+      if (reconnectTimer) {
+        clearTimeout(reconnectTimer);
+      }
+      reconnectTimer = setTimeout(connect, delayMs);
+    }
+
+    function closeSocket() {
+      if (ws && (ws.readyState === WebSocket.OPEN || ws.readyState === WebSocket.CONNECTING)) {
+        try {
+          ws.close();
+        } catch (_err) {
+          // ignore close errors
+        }
+      }
+      ws = null;
+    }
+
     function connect() {
+      closeSocket();
       const target = resolvedWsUrl();
       setStatus('Connecting: ' + target);
-      const ws = new WebSocket(target);
+      ws = new WebSocket(target);
       ws.binaryType = 'blob';
 
-      ws.onopen = () => setStatus('Connected');
+      ws.onopen = () => {
+        lastConnectedAt = Date.now();
+        setStatus('Connected');
+      };
       ws.onerror = () => setStatus('WebSocket error', true);
       ws.onclose = () => {
         setStatus('Disconnected, retrying in 1s...', true);
-        setTimeout(connect, 1000);
+        scheduleReconnect(1000);
       };
 
       ws.onmessage = (ev) => {
+        lastFrameAt = Date.now();
         const url = URL.createObjectURL(ev.data);
         img.src = url;
         if (lastUrl) {
@@ -73,6 +102,21 @@ def index():
         lastUrl = url;
       };
     }
+
+    setInterval(() => {
+      const now = Date.now();
+      const stale = (now - lastFrameAt) > STALE_FRAME_MS;
+      if (stale) {
+        setStatus('No frames for 8s, reconnecting...', true);
+        connect();
+      }
+
+      const disconnected = !ws || ws.readyState === WebSocket.CLOSED;
+      if (disconnected && (now - lastConnectedAt) > REFRESH_WHEN_DOWN_MS) {
+        setStatus('Still disconnected, refreshing page...', true);
+        location.reload();
+      }
+    }, 2000);
 
     connect();
   </script>

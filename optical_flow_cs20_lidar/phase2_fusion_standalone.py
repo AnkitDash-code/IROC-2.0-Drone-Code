@@ -2,7 +2,7 @@
 """
 CS20 LiDAR Phase2 fusion launcher.
 
-Runs CS20 fusion with IR optical flow primary and optional depth-ICP secondary.
+Runs CS20 fusion with pure IR optical flow.
 """
 
 import os
@@ -12,30 +12,19 @@ import time
 from optical_flow_realsense import phase2_standalone as rs
 from optical_flow_realsense import phase2_fusion_standalone as rf
 
-from .depth_icp_odometry import CS20DepthICPEstimator
 from .ir_optical_flow_estimator import CS20IROpticalFlowEstimator
-from .phase2_standalone import cleanup_lidar, launch_hardware_lidar
+from .phase2_standalone import cleanup_lidar, launch_hardware_lidar, configure_cs20_runtime
 
 
 class CS20Phase2FusionNode(rs.Phase2Node):
     def __init__(self):
         super().__init__()
 
-        # Replace whichever mapper parent selected with explicit CS20 fusion pair.
+        # Replace whichever mapper parent selected with explicit CS20 pure OF mapper.
         primary = CS20IROpticalFlowEstimator()
 
-        secondary = None
-        use_icp_secondary = os.environ.get("CS20_FUSION_USE_ICP", "1") in ("1", "true", "True")
-        if use_icp_secondary:
-            secondary = CS20DepthICPEstimator(
-                use_gpu=os.environ.get("CS20_USE_GPU", "1") in ("1", "true", "True")
-            )
-            self.node.get_logger().info("CS20 fusion secondary mapper: DEPTH_ICP")
-        else:
-            self.node.get_logger().info("CS20 fusion running primary-only (IR_OF)")
-
-        self.flow_mapper = rf.FusionVelocityMapper(primary_mapper=primary, secondary_mapper=secondary)
-        self.node.get_logger().info("CS20 Phase2 fusion mapper enabled (IR_OF + optional DEPTH_ICP)")
+        self.flow_mapper = rf.FusionVelocityMapper(primary_mapper=primary, secondary_mapper=None)
+        self.node.get_logger().info("CS20 Phase2 fusion mapper enabled (IR_OF only)")
 
     def save_route_outputs(self):
         if self.flow_mapper is None:
@@ -44,6 +33,8 @@ class CS20Phase2FusionNode(rs.Phase2Node):
 
 
 def main():
+    configure_cs20_runtime()
+
     rs.cleanup = cleanup_lidar
     rs.launch_hardware = launch_hardware_lidar
     rf.cleanup = cleanup_lidar
