@@ -18,9 +18,12 @@ from ctypes import POINTER, byref, cast, c_bool, c_int, c_short, c_ubyte, c_usho
 import cv2
 import numpy as np
 import rclpy
-from cv_bridge import CvBridge
 from rclpy.node import Node
 from sensor_msgs.msg import CameraInfo, Image, Range
+import threading
+import requests
+import io
+import json
 
 SDK_DIR = os.path.abspath(
     os.path.join(os.path.dirname(__file__), "..", "SynexensPythonSDK4_4.2.4.0_202504281506")
@@ -61,6 +64,7 @@ class CS20LidarBridge(Node):
         self.declare_parameter("camera_info_topic", "/camera/camera/color/camera_info")
         self.declare_parameter("range_topic", "/tof_sensor/range")
         self.declare_parameter("frame_id", "camera_link")
+        self.declare_parameter("dashboard_url", "")
 
         self.publish_hz = float(self.get_parameter("publish_hz").value)
         self.depth_topic = str(self.get_parameter("depth_topic").value)
@@ -69,6 +73,7 @@ class CS20LidarBridge(Node):
         self.camera_info_topic = str(self.get_parameter("camera_info_topic").value)
         self.range_topic = str(self.get_parameter("range_topic").value)
         self.frame_id = str(self.get_parameter("frame_id").value)
+        self.dashboard_url = str(self.get_parameter("dashboard_url").value)
 
         res_str = str(self.get_parameter("resolution").value).lower()
         if res_str == "640x480":
@@ -78,7 +83,8 @@ class CS20LidarBridge(Node):
             self.resolution = SYResolutionEnum.SYRESOLUTION_320_240
             self.width, self.height = 320, 240
 
-        self.bridge = CvBridge()
+        # avoid CvBridge (possible binary conflicts); construct Image messages manually
+        self.bridge = None
         self.pub_depth = self.create_publisher(Image, self.depth_topic, 10)
         self.pub_mono = self.create_publisher(Image, self.mono_topic, 10)
         self.pub_ir = self.create_publisher(Image, self.ir_topic, 10)
@@ -93,7 +99,7 @@ class CS20LidarBridge(Node):
         self._cy = float(self.height) * 0.5
 
         self._init_sdk()
-        self.timer = self.create_timer(1.0 / max(1.0, self.publish_hz), self._tick)
+        # We'll call _tick from the main loop to keep SDK calls single-threaded
         self.get_logger().info(
             f"CS20 bridge started | mono={self.mono_topic} depth={self.depth_topic} range={self.range_topic}"
         )
@@ -124,8 +130,8 @@ class CS20LidarBridge(Node):
             UnInitSDK()
             raise RuntimeError("SetFrameResolution(depth) failed")
 
-        # Depth+IR stream gives better texture for optical flow when IR is available.
-        st = StartStreaming(self._device_id, SYStreamTypeEnum.SYSTREAMTYPE_DEPTHIR)
+        # Use depth stream (matches ransac.py) to avoid interleaved IR controls
+        st = StartStreaming(self._device_id, SYStreamTypeEnum.SYSTREAMTYPE_DEPTH)
         if st != SYErrorCodeEnum.SYERRORCODE_SUCCESS:
             CloseDevice(self._device_id)
             UnInitSDK()
@@ -141,6 +147,9 @@ class CS20LidarBridge(Node):
                 self._fy = float(intr.m_fltFocalDistanceY)
             self._cx = float(intr.m_fltCenterPointX)
             self._cy = float(intr.m_fltCenterPointY)
+
+        if self.dashboard_url:
+            self.get_logger().info(f"Dashboard posting enabled -> {self.dashboard_url}")
 
     @staticmethod
     def _frame_bytes(frame_type, n_count):
@@ -214,6 +223,7 @@ class CS20LidarBridge(Node):
         msg.max_range = 10.0
         msg.range = rng
         self.pub_range.publish(msg)
+        # Note: dashboard posting will be performed from the main _tick loop
 
     def _tick(self):
         depth16, ir16 = self._extract_frames()
@@ -228,19 +238,67 @@ class CS20LidarBridge(Node):
 
         now = self.get_clock().now().to_msg()
 
-        depth_msg = self.bridge.cv2_to_imgmsg(depth16.astype(np.uint16), encoding="16UC1")
+        # build depth Image message without CvBridge
+        depth_msg = Image()
         depth_msg.header.stamp = now
         depth_msg.header.frame_id = self.frame_id
+        depth_msg.height = int(depth16.shape[0])
+        depth_msg.width = int(depth16.shape[1])
+        depth_msg.encoding = "16UC1"
+        depth_msg.is_bigendian = 0
+        depth_msg.step = int(depth16.shape[1] * 2)
+        depth_msg.data = depth16.astype(np.uint16).tobytes()
         self.pub_depth.publish(depth_msg)
 
-        mono_msg = self.bridge.cv2_to_imgmsg(mono8, encoding="mono8")
+        mono_msg = Image()
         mono_msg.header.stamp = now
         mono_msg.header.frame_id = self.frame_id
+        mono_msg.height = int(mono8.shape[0])
+        mono_msg.width = int(mono8.shape[1])
+        mono_msg.encoding = "mono8"
+        mono_msg.is_bigendian = 0
+        mono_msg.step = int(mono8.shape[1])
+        mono_msg.data = mono8.tobytes()
         self.pub_mono.publish(mono_msg)
         self.pub_ir.publish(mono_msg)
 
         self._publish_camera_info(now)
         self._publish_range(depth16, now)
+        # If dashboard_url configured, encode and POST a JPEG + camera info (best-effort)
+        if self.dashboard_url:
+            try:
+                if ir16 is not None:
+                    mono8 = cv2.convertScaleAbs(ir16, alpha=0.5)
+                else:
+                    norm = cv2.normalize(depth16, None, 0, 255, cv2.NORM_MINMAX)
+                    mono8 = cv2.convertScaleAbs(norm)
+
+                vis = cv2.cvtColor(mono8, cv2.COLOR_GRAY2BGR)
+                ret, buf = cv2.imencode('.jpg', vis, [cv2.IMWRITE_JPEG_QUALITY, 70])
+                if ret:
+                    files = {'image': ('frame.jpg', buf.tobytes(), 'image/jpeg')}
+                    meta = {
+                        'yaw': 0.0,
+                        'altitude': 0.0,
+                        'vx': 0.0,
+                        'vy': 0.0,
+                        'kp_count': 0,
+                        'vo_debug': {'marker_locked': False},
+                        'camera_info': {
+                            'width': int(self.width),
+                            'height': int(self.height),
+                            'fx': float(self._fx),
+                            'fy': float(self._fy),
+                            'cx': float(self._cx),
+                            'cy': float(self._cy),
+                        }
+                    }
+                    try:
+                        requests.post(self.dashboard_url, files=files, data={'meta': json.dumps(meta)}, timeout=0.5)
+                    except Exception:
+                        pass
+            except Exception:
+                pass
 
     def destroy_node(self):
         try:
@@ -264,7 +322,20 @@ def main(args=None):
     rclpy.init(args=args)
     node = CS20LidarBridge()
     try:
-        rclpy.spin(node)
+        # Run a single-threaded loop: call _tick and spin_once so SDK calls
+        # happen on the same thread as ROS spinning (avoids SDK thread-safety issues).
+        rate = 1.0 / max(1.0, node.publish_hz)
+        while rclpy.ok():
+            t0 = time.time()
+            try:
+                node._tick()
+            except Exception:
+                pass
+            # allow rclpy to process callbacks without using timer threads
+            rclpy.spin_once(node, timeout_sec=0.0)
+            dt = time.time() - t0
+            to_sleep = max(0.0, rate - dt)
+            time.sleep(to_sleep)
     except KeyboardInterrupt:
         pass
     finally:

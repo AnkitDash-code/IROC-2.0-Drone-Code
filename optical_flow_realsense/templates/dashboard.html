@@ -4,805 +4,420 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Phase 2 Dashboard - Vision + ToF Localization</title>
+    <title>Drone Vision Dashboard</title>
     <style>
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
         }
 
         body {
-            font-family: 'Courier New', monospace;
-            background: #1a1a1a;
-            color: #00ff00;
-            overflow: hidden;
+            font-family: "Courier New", monospace;
+            background: #0a0f0a;
+            color: #32ff63;
             height: 100vh;
+            overflow: hidden;
         }
 
-        .container {
+        .layout {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            grid-template-rows: 1fr 1fr;
+            grid-template-columns: 2fr 1fr;
             gap: 10px;
-            padding: 10px;
             height: 100vh;
+            padding: 10px;
         }
 
         .panel {
-            background: #0a0a0a;
-            border: 2px solid #00ff00;
-            border-radius: 5px;
-            padding: 15px;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
+            border: 2px solid #15d94f;
+            background: #030503;
+            border-radius: 6px;
+            padding: 10px;
             min-height: 0;
             min-width: 0;
         }
 
         .panel h2 {
-            margin-bottom: 10px;
             font-size: 16px;
-            border-bottom: 1px solid #00ff00;
-            padding-bottom: 8px;
+            margin-bottom: 8px;
+            border-bottom: 1px solid #15d94f;
+            padding-bottom: 6px;
         }
 
-        #canvas-3d {
+        .video-wrap {
+            position: relative;
             width: 100%;
-            height: 100%;
-            flex: 1;
-            display: block;
-            background: #0a0a0a;
+            height: calc(100% - 32px);
+            background: #000;
+            overflow: hidden;
         }
 
         #video-stream {
             width: 100%;
             height: 100%;
             object-fit: contain;
+            display: block;
             background: #000;
         }
 
-        #route-map {
+        #overlay-canvas {
+            position: absolute;
+            left: 0;
+            top: 0;
             width: 100%;
             height: 100%;
-            flex: 1;
-            display: block;
-            background: #050505;
-            border: 1px solid #00aa00;
+            pointer-events: none;
         }
 
-        .metrics {
+        .telemetry {
+            display: grid;
+            gap: 8px;
+            font-size: 15px;
+            line-height: 1.25;
+        }
+
+        .mini-widgets {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 8px;
-            flex: 1;
-            overflow-y: auto;
+            margin-top: 8px;
         }
 
-        .metric {
-            background: #1a1a1a;
-            border: 1px solid #00aa00;
-            padding: 10px;
-            border-radius: 3px;
+        .widget {
+            border: 1px solid #15d94f;
+            border-radius: 4px;
+            padding: 6px;
+            background: #020402;
+        }
+
+        .widget-title {
             font-size: 12px;
+            color: #8cffad;
+            margin-bottom: 4px;
         }
 
-        .metric-label {
-            color: #00aa00;
-            font-weight: bold;
+        .widget canvas {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            display: block;
+            background: #000;
+            border-radius: 2px;
         }
 
-        .metric-value {
-            color: #00ff00;
-            font-size: 14px;
-            font-weight: bold;
-            margin-top: 4px;
+        .kv b {
+            color: #8cffad;
         }
 
-        .bin-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 6px;
-            flex: 1;
-            overflow-y: auto;
-        }
-
-        .bin-cell {
-            background: #1a1a1a;
-            border: 2px solid #444;
-            padding: 10px;
-            text-align: center;
-            border-radius: 3px;
-            transition: all 0.2s;
-        }
-
-        .bin-cell.ready {
-            border-color: #00ff00;
-            background: #0a3a0a;
-            box-shadow: 0 0 10px #00ff00;
-        }
-
-        .bin-cell.active {
-            border-color: #ffff00;
-            background: #3a3a0a;
-            box-shadow: 0 0 10px #ffff00;
-        }
-
-        .bin-id {
-            font-weight: bold;
-            font-size: 14px;
-        }
-
-        .bin-range {
-            font-size: 10px;
-            color: #00aa00;
-            margin-top: 4px;
-        }
-
-        .bin-count {
-            color: #00ff00;
-            font-size: 12px;
-            margin-top: 4px;
-        }
-
-        .title {
-            grid-column: 1 / 4;
-            text-align: center;
-            border-bottom: 2px solid #00ff00;
-            padding-bottom: 10px;
-            margin-bottom: 10px;
-        }
-
-        .title h1 {
-            font-size: 24px;
-            margin-bottom: 5px;
-        }
-
-        .status-bar {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-        .status-item {
-            background: #1a1a1a;
-            padding: 8px;
-            border: 1px solid #00aa00;
-            border-radius: 3px;
-            text-align: center;
-            font-size: 11px;
-        }
-
-        .status-value {
-            color: #00ff00;
-            font-weight: bold;
-            margin-top: 3px;
-        }
-
-        .grid-2row {
-            grid-row: span 2;
-        }
-
-        .overlay-info {
-            position: absolute;
-            bottom: 10px;
-            right: 10px;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 8px;
-            border: 1px solid #00ff00;
-            font-size: 11px;
-            border-radius: 3px;
-            z-index: 10;
-            max-width: 300px;
+        .kv span {
+            color: #ffffff;
         }
     </style>
 </head>
 
 <body>
-    <div class="container">
-        <div class="title" style="text-align: center;">
-            <h1>🚀 PHASE 2: Vision + ToF Localization</h1>
-            <div style="font-size: 12px;">Real-time ORB Feature Tracking & Metric Optical Flow</div>
-        </div>
-
-        <div class="panel grid-2row">
-            <h2>🎯 3D Compass Bins</h2>
-            <canvas id="canvas-3d"></canvas>
-        </div>
-
+    <div class="layout">
         <div class="panel">
-            <h2>📹 Video Stream</h2>
-            <img id="video-stream" src="/video_feed" alt="Video Stream">
-        </div>
-
-        <div class="panel">
-            <h2>📊 Real-time Metrics</h2>
-            <div class="metrics">
-                <div class="metric">
-                    <div class="metric-label">Heading (Yaw)</div>
-                    <div class="metric-value" id="yaw">0.0°</div>
-                </div>
-                <div class="metric">
-                    <div class="metric-label">Altitude</div>
-                    <div class="metric-value" id="altitude">0.00 m</div>
-                </div>
-                <div class="metric">
-                    <div class="metric-label">Velocity X</div>
-                    <div class="metric-value" id="vel-x">0.00 m/s</div>
-                </div>
-                <div class="metric">
-                    <div class="metric-label">Velocity Y</div>
-                    <div class="metric-value" id="vel-y">0.00 m/s</div>
-                </div>
-                <div class="metric">
-                    <div class="metric-label">FPS</div>
-                    <div class="metric-value" id="fps">30.0</div>
-                </div>
-                <div class="metric">
-                    <div class="metric-label">Keypoints</div>
-                    <div class="metric-value" id="keypoints">0</div>
-                </div>
-                <div class="metric">
-                    <div class="metric-label">Relocalized</div>
-                    <div class="metric-value" id="reloc-bin">—</div>
-                </div>
-                <div class="metric">
-                    <div class="metric-label">Match Score</div>
-                    <div class="metric-value" id="match-score">0</div>
-                </div>
-                <div class="metric">
-                    <div class="metric-label">Route Scale</div>
-                    <div class="metric-value" id="route-scale">±1.0 m</div>
-                </div>
-                <div class="metric">
-                    <div class="metric-label">VO Source</div>
-                    <div class="metric-value" id="vo-source">—</div>
-                </div>
-                <div class="metric">
-                    <div class="metric-label">VO Step</div>
-                    <div class="metric-value" id="vo-step">0.000 m</div>
-                </div>
-                <div class="metric">
-                    <div class="metric-label">VO Flow / Inliers</div>
-                    <div class="metric-value" id="vo-flow">0.00 / 0.00</div>
-                </div>
-                <div class="metric">
-                    <div class="metric-label">VO Reject</div>
-                    <div class="metric-value" id="vo-reject">—</div>
-                </div>
-                <div class="metric">
-                    <div class="metric-label">Feature Backend</div>
-                    <div class="metric-value" id="ai-backend">ORB</div>
-                </div>
-                <div class="metric">
-                    <div class="metric-label">AI FPS</div>
-                    <div class="metric-value" id="ai-fps">0.0</div>
-                </div>
+            <h2>Video Stream</h2>
+            <div class="video-wrap" id="video-wrap">
+                <img id="video-stream" src="/video_feed?fps=0" alt="Video Stream">
+                <canvas id="overlay-canvas"></canvas>
             </div>
         </div>
-
         <div class="panel">
-            <h2>📍 Compass Bin Status</h2>
-            <div class="bin-grid" id="bin-grid">
-                <!-- Populated by JavaScript -->
+            <h2>Telemetry</h2>
+            <div class="telemetry">
+                <div class="kv"><b>Lock:</b> <span id="lock-status">NO LOCK</span></div>
+                <div class="kv"><b>Markers:</b> <span id="marker-count">0</span></div>
+                <div class="kv"><b>Detected IDs:</b> <span id="detected-ids">-</span></div>
+                <div class="kv"><b>Marker Label:</b> <span id="marker-label">-</span></div>
+                <div class="kv"><b>Match Score:</b> <span id="match-score">0</span></div>
+                <div class="kv"><b>Yaw:</b> <span id="yaw">0.0</span></div>
+                <div class="kv"><b>Altitude:</b> <span id="altitude">0.00</span></div>
+                <div class="kv"><b>Velocity:</b> <span id="vel">(0.00, 0.00)</span></div>
+                <div class="kv"><b>Keypoints:</b> <span id="keypoints">0</span></div>
+                <div class="kv"><b>Tracking:</b> <span id="tracking">OFF</span></div>
+                <div class="kv"><b>Track Motion px:</b> <span id="track-motion">0.00</span></div>
+                <div class="kv"><b>Drift px:</b> <span id="drift">(0.00, 0.00)</span></div>
+                <div class="kv"><b>Drift Norm:</b> <span id="drift-norm">0.00</span></div>
+                <div class="kv"><b>Drift Cmd:</b> <span id="drift-cmd">hold</span></div>
+                <div class="kv"><b>Base Ref:</b> <span id="base-ref">UNSET</span></div>
+                <div class="kv"><b>Base Rel px:</b> <span id="base-rel">(0.00, 0.00)</span></div>
+                <div class="kv"><b>Hover EMA:</b> <span id="hover-ema">0.00</span></div>
+                <div class="kv"><b>Hover Cmd:</b> <span id="hover-cmd">hold</span></div>
+                <div class="kv"><b>IMU Fused RPY:</b> <span id="imu-rpy">(0.0, 0.0, 0.0)</span></div>
+                <div class="kv"><b>Blob Thr:</b> <span id="blob-thr">0</span></div>
+                <div class="mini-widgets">
+                    <div class="widget">
+                        <div class="widget-title">Drift Map</div>
+                        <canvas id="mini-map"></canvas>
+                    </div>
+                    <div class="widget">
+                        <div class="widget-title">Compass</div>
+                        <canvas id="mini-compass"></canvas>
+                    </div>
+                </div>
             </div>
-        </div>
-
-        <div class="panel">
-            <h2>🗺️ Route Map (Meters)</h2>
-            <canvas id="route-map"></canvas>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/three@r128/build/three.min.js"></script>
     <script>
-        // State variables
-        let currentState = null;
-        let binStates = {};
-        let usingThreeJS = false;
-        let fallback2DActive = false;
-        let stateRequestInFlight = false;
-        let lastStateOkAt = 0;
+        let state = null;
+        let inflight = false;
 
-        // Three.js scene setup
-        let scene, camera, renderer;
-        let compassRing;
-        let binMeshes = {};
-        let yawIndicator;
+        const img = document.getElementById('video-stream');
+        const canvas = document.getElementById('overlay-canvas');
+        const wrap = document.getElementById('video-wrap');
+        const mapCanvas = document.getElementById('mini-map');
+        const compassCanvas = document.getElementById('mini-compass');
+        const mapTrail = [];
 
-        function initCompassFallback2D() {
-            const canvas = document.getElementById('canvas-3d');
-            if (!canvas) return;
+        function fitCanvas() {
+            const r = wrap.getBoundingClientRect();
+            if (canvas.width !== Math.floor(r.width) || canvas.height !== Math.floor(r.height)) {
+                canvas.width = Math.floor(r.width);
+                canvas.height = Math.floor(r.height);
+            }
+        }
 
+        function drawOverlay() {
+            fitCanvas();
             const ctx = canvas.getContext('2d');
-            if (!ctx) return;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            if (!state || !state.vo_debug) return;
 
-            fallback2DActive = true;
+            const vo = state.vo_debug;
+            const boxes = Array.isArray(vo.marker_boxes) ? vo.marker_boxes : [];
+            const lockedLabel = vo.marker_label != null ? String(vo.marker_label) : null;
 
-            function drawFallback() {
-                if (!fallback2DActive) return;
+            const natW = img.naturalWidth || canvas.width;
+            const natH = img.naturalHeight || canvas.height;
+            if (natW <= 0 || natH <= 0) return;
 
-                const width = canvas.clientWidth || 400;
-                const height = canvas.clientHeight || 300;
-                if (canvas.width !== width || canvas.height !== height) {
-                    canvas.width = width;
-                    canvas.height = height;
-                }
+            const scale = Math.min(canvas.width / natW, canvas.height / natH);
+            const drawW = natW * scale;
+            const drawH = natH * scale;
+            const offX = (canvas.width - drawW) * 0.5;
+            const offY = (canvas.height - drawH) * 0.5;
 
-                ctx.clearRect(0, 0, width, height);
-                ctx.fillStyle = '#0a0a0a';
-                ctx.fillRect(0, 0, width, height);
+            for (const mb of boxes) {
+                if (!mb || !Array.isArray(mb.bbox) || mb.bbox.length < 4) continue;
+                const x = mb.bbox[0] * scale + offX;
+                const y = mb.bbox[1] * scale + offY;
+                const w = mb.bbox[2] * scale;
+                const h = mb.bbox[3] * scale;
+                const label = String(mb.label ?? '?');
+                const score = Number(mb.score ?? 0);
 
-                const cx = width / 2;
-                const cy = height / 2;
-                const r = Math.min(width, height) * 0.35;
+                const isLock = lockedLabel !== null && label === lockedLabel;
+                ctx.strokeStyle = isLock ? '#00ff66' : '#ffc800';
+                ctx.lineWidth = isLock ? 3 : 2;
+                ctx.strokeRect(x, y, w, h);
 
-                ctx.strokeStyle = '#00aa00';
-                ctx.lineWidth = 3;
+                const text = `${label}:${score}`;
+                ctx.font = '14px monospace';
+                const tw = ctx.measureText(text).width + 8;
+                const tx = x;
+                const ty = Math.max(16, y - 6);
+                ctx.fillStyle = 'rgba(0,0,0,0.65)';
+                ctx.fillRect(tx, ty - 14, tw, 16);
+                ctx.fillStyle = isLock ? '#00ff66' : '#ffc800';
+                ctx.fillText(text, tx + 4, ty - 2);
+            }
+        }
+
+        function updateTelemetry() {
+            if (!state) return;
+            const vo = state.vo_debug || {};
+
+            document.getElementById('lock-status').textContent = vo.marker_locked ? 'LOCKED' : 'NO LOCK';
+            document.getElementById('marker-count').textContent = String(vo.detected_markers ?? 0);
+            document.getElementById('marker-label').textContent = vo.marker_label ?? '-';
+            const boxes = Array.isArray(vo.marker_boxes) ? vo.marker_boxes : [];
+            const labels = [];
+            const seen = new Set();
+            for (const b of boxes) {
+                const lb = String((b && b.label != null) ? b.label : '').trim();
+                if (!lb || seen.has(lb)) continue;
+                seen.add(lb);
+                labels.push(lb);
+            }
+            document.getElementById('detected-ids').textContent = labels.length > 0 ? labels.join(', ') : '-';
+            document.getElementById('match-score').textContent = String(state.match_score ?? 0);
+            document.getElementById('yaw').textContent = `${Number(state.yaw ?? 0).toFixed(1)} deg`;
+            document.getElementById('altitude').textContent = `${Number(state.altitude ?? 0).toFixed(2)} m`;
+            document.getElementById('vel').textContent = `(${Number(state.velocity_x ?? 0).toFixed(2)}, ${Number(state.velocity_y ?? 0).toFixed(2)})`;
+            document.getElementById('keypoints').textContent = String(state.keypoint_count ?? 0);
+            document.getElementById('tracking').textContent = vo.tracking_active ? 'ON' : 'OFF';
+            document.getElementById('track-motion').textContent = Number(vo.track_motion_px ?? 0).toFixed(2);
+            document.getElementById('drift').textContent = `(${Number(vo.drift_dx_px ?? 0).toFixed(2)}, ${Number(vo.drift_dy_px ?? 0).toFixed(2)})`;
+            document.getElementById('drift-norm').textContent = Number(vo.drift_norm_px ?? 0).toFixed(2);
+            document.getElementById('drift-cmd').textContent = String(vo.drift_command ?? 'hold');
+            const baseRef = Array.isArray(vo.base_ref_px) && vo.base_ref_px.length >= 2
+                ? `SET (${Number(vo.base_ref_px[0]).toFixed(1)}, ${Number(vo.base_ref_px[1]).toFixed(1)})`
+                : 'UNSET';
+            document.getElementById('base-ref').textContent = baseRef;
+            document.getElementById('base-rel').textContent = `(${Number(vo.base_rel_dx_px ?? 0).toFixed(2)}, ${Number(vo.base_rel_dy_px ?? 0).toFixed(2)})`;
+            document.getElementById('hover-ema').textContent = Number(vo.hover_ema_norm_px ?? 0).toFixed(2);
+            document.getElementById('hover-cmd').textContent = String(vo.hover_correction_command ?? 'hold');
+            document.getElementById('imu-rpy').textContent = `(${Number(vo.imu_fused_roll_deg ?? 0).toFixed(1)}, ${Number(vo.imu_fused_pitch_deg ?? 0).toFixed(1)}, ${Number(vo.imu_fused_yaw_deg ?? 0).toFixed(1)})`;
+            document.getElementById('blob-thr').textContent = `${Number(vo.blob_threshold_applied ?? vo.blob_threshold ?? 0)}${vo.auto_exposure_threshold ? ' (auto)' : ''}`;
+        }
+
+        function fitWidgetCanvas(c) {
+            if (!c) return;
+            const r = c.getBoundingClientRect();
+            const w = Math.max(80, Math.floor(r.width));
+            const h = Math.max(80, Math.floor(r.height));
+            if (c.width !== w || c.height !== h) {
+                c.width = w;
+                c.height = h;
+            }
+        }
+
+        function drawMiniMap() {
+            fitWidgetCanvas(mapCanvas);
+            const ctx = mapCanvas.getContext('2d');
+            const w = mapCanvas.width;
+            const h = mapCanvas.height;
+            const cx = w * 0.5;
+            const cy = h * 0.5;
+            ctx.clearRect(0, 0, w, h);
+
+            ctx.strokeStyle = '#0d4d1f';
+            ctx.lineWidth = 1;
+            for (let i = 1; i < 4; i++) {
+                const r = (Math.min(w, h) * 0.45 * i) / 3;
                 ctx.beginPath();
                 ctx.arc(cx, cy, r, 0, Math.PI * 2);
                 ctx.stroke();
-
-                for (let i = 0; i < 8; i++) {
-                    const st = currentState && currentState.bin_states ? currentState.bin_states[i] : null;
-                    const angle = (i / 8) * Math.PI * 2 - Math.PI / 2;
-                    const x = cx + Math.cos(angle) * r;
-                    const y = cy + Math.sin(angle) * r;
-
-                    let color = '#444444';
-                    if (st) {
-                        if (st.is_ready) color = '#00ff00';
-                        else if (st.num_features > 0) color = '#aaaa00';
-                    }
-
-                    ctx.strokeStyle = color;
-                    ctx.lineWidth = 2;
-                    ctx.beginPath();
-                    ctx.moveTo(cx, cy);
-                    ctx.lineTo(x, y);
-                    ctx.stroke();
-
-                    const lx = cx + Math.cos(angle) * (r + 18);
-                    const ly = cy + Math.sin(angle) * (r + 18);
-                    ctx.fillStyle = color;
-                    ctx.font = '12px monospace';
-                    ctx.fillText('B' + i, lx - 8, ly + 4);
-                }
-
-                const yaw = currentState ? currentState.yaw : 0;
-                const ya = (yaw * Math.PI / 180) - Math.PI / 2;
-                const yx = cx + Math.cos(ya) * r;
-                const yy = cy + Math.sin(ya) * r;
-                ctx.strokeStyle = '#ff3333';
-                ctx.lineWidth = 4;
-                ctx.beginPath();
-                ctx.moveTo(cx, cy);
-                ctx.lineTo(yx, yy);
-                ctx.stroke();
-
-                requestAnimationFrame(drawFallback);
             }
+            ctx.beginPath();
+            ctx.moveTo(cx, 0);
+            ctx.lineTo(cx, h);
+            ctx.moveTo(0, cy);
+            ctx.lineTo(w, cy);
+            ctx.stroke();
 
-            drawFallback();
-            console.warn('Three.js unavailable, using 2D compass fallback');
-        }
+            if (!state) return;
+            const vo = state.vo_debug || {};
+            const useMetric = Boolean(vo.base_rel_metric_valid);
+            const dx = useMetric
+                ? Number(vo.base_rel_dx_m ?? 0)
+                : Number(vo.base_rel_dx_px ?? vo.drift_dx_px ?? 0);
+            const dy = useMetric
+                ? Number(vo.base_rel_dy_m ?? 0)
+                : Number(vo.base_rel_dy_px ?? vo.drift_dy_px ?? 0);
 
-        function initThreeJS() {
-            if (!window.THREE) {
-                initCompassFallback2D();
-                return;
-            }
+            mapTrail.push({ dx, dy });
+            if (mapTrail.length > 40) mapTrail.shift();
 
-            // Get canvas
-            const canvas = document.getElementById('canvas-3d');
-            if (!canvas) {
-                console.error('Canvas element not found');
-                return;
-            }
+            const floor = useMetric ? 0.15 : 20.0;
+            const maxAbs = Math.max(floor, ...mapTrail.map(p => Math.max(Math.abs(p.dx), Math.abs(p.dy))));
+            const scale = (Math.min(w, h) * 0.4) / maxAbs;
 
-            // Get dimensions - ensure they're valid
-            let width = canvas.clientWidth;
-            let height = canvas.clientHeight;
-
-            if (width <= 0 || height <= 0) {
-                console.warn('Invalid canvas size, using defaults:', width, height);
-                width = 400;
-                height = 400;
-            }
-
-            console.log('Initializing Three.js with canvas size:', width, 'x', height);
-            usingThreeJS = true;
-
-            // Scene
-            scene = new THREE.Scene();
-            scene.background = new THREE.Color(0x0a0a0a);
-            scene.fog = new THREE.Fog(0x0a0a0a, 10, 100);
-
-            camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
-            camera.position.z = 3;
-
-            renderer = new THREE.WebGLRenderer({
-                canvas,
-                antialias: true,
-                alpha: true,
-                powerPreference: 'high-performance'
-            });
-            renderer.setSize(width, height);
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-            renderer.shadowMap.enabled = true;
-
-            // Lighting
-            const directionalLight = new THREE.DirectionalLight(0xffffff, 1.5);
-            directionalLight.position.set(10, 10, 10);
-            directionalLight.castShadow = true;
-            scene.add(directionalLight);
-
-            const ambientLight = new THREE.AmbientLight(0x555555, 1);
-            scene.add(ambientLight);
-
-            // Create compass ring (main torus)
-            const ringGeometry = new THREE.TorusGeometry(2, 0.1, 32, 200);
-            const ringMaterial = new THREE.MeshStandardMaterial({
-                color: 0x00aa00,
-                metalness: 0.3,
-                roughness: 0.4,
-                emissive: 0x003300
-            });
-            compassRing = new THREE.Mesh(ringGeometry, ringMaterial);
-            scene.add(compassRing);
-
-            // Create 8 bin cubes around the ring
-            for (let i = 0; i < 8; i++) {
-                const angle = (i / 8) * Math.PI * 2;
-                const x = Math.cos(angle) * 2;
-                const z = Math.sin(angle) * 2;
-
-                const boxGeometry = new THREE.BoxGeometry(0.25, 0.25, 0.15);
-                const boxMaterial = new THREE.MeshStandardMaterial({
-                    color: 0x333333,
-                    emissive: 0x111111,
-                    metalness: 0.2,
-                    roughness: 0.6
-                });
-                const binMesh = new THREE.Mesh(boxGeometry, boxMaterial);
-                binMesh.position.set(x, 0, z);
-                binMesh.castShadow = true;
-                binMesh.receiveShadow = true;
-                scene.add(binMesh);
-                binMeshes[i] = { mesh: binMesh, material: boxMaterial, angle: angle };
-            }
-
-            // Create yaw indicator (red cone pointing up)
-            const arrowGeometry = new THREE.ConeGeometry(0.2, 0.6, 16);
-            const arrowMaterial = new THREE.MeshStandardMaterial({
-                color: 0xff0000,
-                emissive: 0x660000,
-                metalness: 0.5
-            });
-            yawIndicator = new THREE.Mesh(arrowGeometry, arrowMaterial);
-            yawIndicator.position.set(0, 0.3, 0);
-            yawIndicator.castShadow = true;
-            scene.add(yawIndicator);
-
-            console.log('✅ Scene created with', Object.keys(binMeshes).length, 'bins');
-
-            // Animation loop
-            function animate() {
-                requestAnimationFrame(animate);
-
-                // Gentle rotation
-                if (compassRing) {
-                    compassRing.rotation.y -= 0.0002;
-                    compassRing.rotation.z += 0.0001;
-                }
-
-                // Update yaw indicator
-                if (currentState && yawIndicator) {
-                    const yawRad = (currentState.yaw - 90) * Math.PI / 180;  // Adjust for cone orientation
-                    yawIndicator.rotation.z = yawRad;
-                }
-
-                renderer.render(scene, camera);
-            }
-
-            // Start animation
-            animate();
-            console.log('✅ Animation loop started');
-        }
-
-        function updateBinVisual(binId, isReady, numFeatures) {
-            if (!usingThreeJS) return;
-            if (binMeshes[binId]) {
-                const meshObj = binMeshes[binId];
-                const material = meshObj.material;
-
-                if (isReady) {
-                    material.color.setHex(0x00ff00);
-                    material.emissive.setHex(0x00aa00);
-                } else if (numFeatures > 0) {
-                    material.color.setHex(0xaaaa00);
-                    material.emissive.setHex(0x555500);
-                } else {
-                    material.color.setHex(0x444444);
-                    material.emissive.setHex(0x000000);
-                }
-            }
-        }
-
-        function updateMetrics() {
-            if (!currentState) return;
-
-            document.getElementById('yaw').textContent = currentState.yaw.toFixed(1) + '°';
-            document.getElementById('altitude').textContent = currentState.altitude.toFixed(2) + ' m';
-            document.getElementById('vel-x').textContent = currentState.velocity_x.toFixed(2) + ' m/s';
-            document.getElementById('vel-y').textContent = currentState.velocity_y.toFixed(2) + ' m/s';
-            document.getElementById('fps').textContent = currentState.fps.toFixed(1);
-            document.getElementById('keypoints').textContent = currentState.keypoint_count;
-
-            if (currentState.relocalized_bin !== null) {
-                document.getElementById('reloc-bin').textContent = 'Bin ' + currentState.relocalized_bin;
-                document.getElementById('match-score').textContent = currentState.match_score;
-            } else {
-                document.getElementById('reloc-bin').textContent = '—';
-                document.getElementById('match-score').textContent = '0';
-            }
-
-            const extent = currentState.route_extent_m || 1.0;
-            document.getElementById('route-scale').textContent = `±${extent.toFixed(1)} m`;
-
-            const vo = currentState.vo_debug || {};
-            document.getElementById('vo-source').textContent = vo.source || '—';
-            document.getElementById('vo-step').textContent = `${(vo.step_m || 0).toFixed(3)} m`;
-            document.getElementById('vo-flow').textContent = `${(vo.flow_px || 0).toFixed(2)} / ${(vo.inlier_ratio || 0).toFixed(2)}`;
-            document.getElementById('vo-reject').textContent = vo.rejected ? (vo.reject_reason || 'YES') : 'NO';
-
-            const ai = currentState.ai_debug || {};
-            document.getElementById('ai-backend').textContent = ai.backend || 'ORB';
-            document.getElementById('ai-fps').textContent = (ai.ai_fps || 0).toFixed(1);
-        }
-
-        function drawRouteMap() {
-            const canvas = document.getElementById('route-map');
-            if (!canvas || !currentState) return;
-
-            const ctx = canvas.getContext('2d');
-            const width = canvas.clientWidth || 400;
-            const height = canvas.clientHeight || 260;
-            if (canvas.width !== width || canvas.height !== height) {
-                canvas.width = width;
-                canvas.height = height;
-            }
-
-            ctx.clearRect(0, 0, width, height);
-            ctx.fillStyle = '#050505';
-            ctx.fillRect(0, 0, width, height);
-
-            const tracks = currentState.route_tracks || {};
-            const points = Array.isArray(tracks.fused) && tracks.fused.length > 0 ? tracks.fused : [[0, 0]];
-            const pointsPnp = tracks.pnp || [];
-            const pointsFallback = tracks.fallback || [];
-            const extent = Math.max(1.0, currentState.route_extent_m || 1.0);
-            const pad = 28;
-            const mapW = width - pad * 2;
-            const mapH = height - pad * 2;
-            const scale = Math.min(mapW, mapH) / (2 * extent);
-            const cx = width / 2;
-            const cy = height / 2;
-
-            // Grid every 1m
-            ctx.strokeStyle = '#123812';
-            ctx.lineWidth = 1;
-            const maxGrid = Math.floor(extent);
-            for (let i = -maxGrid; i <= maxGrid; i++) {
-                const gx = cx + i * scale;
-                const gy = cy - i * scale;
-                ctx.beginPath();
-                ctx.moveTo(gx, pad);
-                ctx.lineTo(gx, height - pad);
-                ctx.stroke();
-                ctx.beginPath();
-                ctx.moveTo(pad, gy);
-                ctx.lineTo(width - pad, gy);
-                ctx.stroke();
-            }
-
-            // Axes
-            ctx.strokeStyle = '#00aa00';
+            ctx.strokeStyle = '#22b8ff';
             ctx.lineWidth = 2;
             ctx.beginPath();
-            ctx.moveTo(pad, cy);
-            ctx.lineTo(width - pad, cy);
+            for (let i = 0; i < mapTrail.length; i++) {
+                const px = cx + mapTrail[i].dx * scale;
+                const py = cy + mapTrail[i].dy * scale;
+                if (i === 0) ctx.moveTo(px, py);
+                else ctx.lineTo(px, py);
+            }
             ctx.stroke();
+
+            const px = cx + dx * scale;
+            const py = cy + dy * scale;
+            ctx.fillStyle = '#ffcd00';
             ctx.beginPath();
-            ctx.moveTo(cx, pad);
-            ctx.lineTo(cx, height - pad);
-            ctx.stroke();
-
-            // Fused route polyline
-            if (points.length > 1) {
-                ctx.strokeStyle = '#4da3ff';
-                ctx.lineWidth = 2.5;
-                ctx.beginPath();
-                for (let i = 0; i < points.length; i++) {
-                    const x = cx + points[i][0] * scale;
-                    const y = cy - points[i][1] * scale;
-                    if (i === 0) ctx.moveTo(x, y);
-                    else ctx.lineTo(x, y);
-                }
-                ctx.stroke();
-            }
-
-            // PnP-only track (orange)
-            if (pointsPnp.length > 1) {
-                ctx.strokeStyle = '#ffb347';
-                ctx.lineWidth = 1.5;
-                ctx.beginPath();
-                for (let i = 0; i < pointsPnp.length; i++) {
-                    const x = cx + pointsPnp[i][0] * scale;
-                    const y = cy - pointsPnp[i][1] * scale;
-                    if (i === 0) ctx.moveTo(x, y);
-                    else ctx.lineTo(x, y);
-                }
-                ctx.stroke();
-            }
-
-            // E-fallback track (magenta)
-            if (pointsFallback.length > 1) {
-                ctx.strokeStyle = '#ff66cc';
-                ctx.lineWidth = 1.5;
-                ctx.beginPath();
-                for (let i = 0; i < pointsFallback.length; i++) {
-                    const x = cx + pointsFallback[i][0] * scale;
-                    const y = cy - pointsFallback[i][1] * scale;
-                    if (i === 0) ctx.moveTo(x, y);
-                    else ctx.lineTo(x, y);
-                }
-                ctx.stroke();
-            }
-
-            // Start and end points
-            const start = points[0] || [0, 0];
-            const end = points[points.length - 1] || [0, 0];
-
-            ctx.fillStyle = '#00ff00';
-            ctx.beginPath();
-            ctx.arc(cx + start[0] * scale, cy - start[1] * scale, 5, 0, Math.PI * 2);
+            ctx.arc(px, py, 4, 0, Math.PI * 2);
             ctx.fill();
 
-            ctx.fillStyle = '#ff4545';
+            ctx.fillStyle = '#32ff63';
             ctx.beginPath();
-            ctx.arc(cx + end[0] * scale, cy - end[1] * scale, 5, 0, Math.PI * 2);
+            ctx.arc(cx, cy, 3, 0, Math.PI * 2);
             ctx.fill();
 
-            // Labels
-            ctx.fillStyle = '#9aff9a';
+            ctx.fillStyle = '#8cffad';
             ctx.font = '11px monospace';
-            ctx.fillText('X (left/right, m)', width - 140, cy - 6);
-            ctx.save();
-            ctx.translate(cx + 8, 18);
-            ctx.fillText('Z (forward, m)', 0, 0);
-            ctx.restore();
-
-            // Legend
-            ctx.fillStyle = '#4da3ff';
-            ctx.fillText('FUSED', pad, pad - 8);
-            ctx.fillStyle = '#ffb347';
-            ctx.fillText('PNP', pad + 56, pad - 8);
-            ctx.fillStyle = '#ff66cc';
-            ctx.fillText('E_FALLBACK', pad + 90, pad - 8);
+            ctx.fillText(useMetric ? 'XY mode: meters' : 'XY mode: pixels', 6, h - 6);
         }
 
-        function updateBinGrid() {
-            if (!currentState) return;
+        function drawCompass() {
+            fitWidgetCanvas(compassCanvas);
+            const ctx = compassCanvas.getContext('2d');
+            const w = compassCanvas.width;
+            const h = compassCanvas.height;
+            const cx = w * 0.5;
+            const cy = h * 0.5;
+            const r = Math.min(w, h) * 0.42;
 
-            const gridHtml = Object.entries(currentState.bin_states).map(([binId, state]) => {
-                const isReady = state.is_ready;
-                const numFeatures = state.num_features;
-                const minH = state.heading_range[0];
-                const maxH = state.heading_range[1];
+            ctx.clearRect(0, 0, w, h);
+            ctx.strokeStyle = '#0d4d1f';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(cx, cy, r, 0, Math.PI * 2);
+            ctx.stroke();
 
-                const className = isReady ? 'ready' : (numFeatures > 0 ? 'active' : '');
+            ctx.strokeStyle = '#15d94f';
+            ctx.lineWidth = 1;
+            for (let i = 0; i < 8; i++) {
+                const a = (i * Math.PI) / 4;
+                const x1 = cx + Math.sin(a) * (r - 5);
+                const y1 = cy - Math.cos(a) * (r - 5);
+                const x2 = cx + Math.sin(a) * r;
+                const y2 = cy - Math.cos(a) * r;
+                ctx.beginPath();
+                ctx.moveTo(x1, y1);
+                ctx.lineTo(x2, y2);
+                ctx.stroke();
+            }
 
-                return `
-                    <div class="bin-cell ${className}">
-                        <div class="bin-id">Bin ${binId}</div>
-                        <div class="bin-range">${minH.toFixed(0)}°-${maxH.toFixed(0)}°</div>
-                        <div class="bin-count">${numFeatures} features</div>
-                    </div>
-                `;
-            }).join('');
+            if (!state) return;
+            const vo = state.vo_debug || {};
+            const headingDeg = Number(vo.imu_fused_yaw_deg ?? state.yaw ?? 0);
+            const a = (headingDeg * Math.PI) / 180;
+            const hx = cx + Math.sin(a) * (r - 10);
+            const hy = cy - Math.cos(a) * (r - 10);
 
-            document.getElementById('bin-grid').innerHTML = gridHtml;
+            ctx.strokeStyle = '#ff5252';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(cx, cy);
+            ctx.lineTo(hx, hy);
+            ctx.stroke();
+
+            ctx.fillStyle = '#ffffff';
+            ctx.font = '12px monospace';
+            ctx.fillText(`N`, cx - 4, cy - r - 4);
+            ctx.fillText(`${headingDeg.toFixed(1)} deg`, 6, h - 8);
         }
 
-        // Fetch state periodically with timeout
         async function fetchState() {
-            if (stateRequestInFlight) {
-                return;
-            }
-
-            stateRequestInFlight = true;
+            if (inflight) return;
+            inflight = true;
             try {
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 1500);
-
-                const response = await fetch(`/api/state?t=${Date.now()}`, {
-                    signal: controller.signal,
-                    cache: 'no-store',
-                    headers: {
-                        'Cache-Control': 'no-cache'
-                    }
-                });
-                clearTimeout(timeoutId);
-
-                if (!response.ok) {
-                    console.warn('API returned', response.status);
-                    return;
+                const r = await fetch(`/api/state?t=${Date.now()}`, { cache: 'no-store' });
+                if (r.ok) {
+                    state = await r.json();
+                    updateTelemetry();
+                    drawOverlay();
+                    drawMiniMap();
+                    drawCompass();
                 }
-
-                currentState = await response.json();
-                lastStateOkAt = Date.now();
-
-                updateMetrics();
-                updateBinGrid();
-                drawRouteMap();
-
-                // Update 3D visuals
-                if (currentState.bin_states) {
-                    Object.entries(currentState.bin_states).forEach(([binId, state]) => {
-                        updateBinVisual(parseInt(binId), state.is_ready, state.num_features);
-                    });
-                }
-            } catch (error) {
-                if (error.name === 'AbortError') {
-                    console.warn('API request timeout');
-                } else {
-                    console.error('Error fetching state:', error);
-                }
+            } catch (e) {
+                console.warn('state fetch error', e);
             } finally {
-                stateRequestInFlight = false;
+                inflight = false;
             }
         }
 
-        // Initialize after full page load (layout complete)
-        window.addEventListener('load', () => {
-            // Small delay to ensure canvas is properly sized
-            setTimeout(() => {
-                try {
-                    initThreeJS();
-                    if (usingThreeJS) {
-                        console.log('Three.js initialized successfully');
-                    }
-                } catch (e) {
-                    console.error('Three.js init error:', e);
-                    initCompassFallback2D();
-                }
-            }, 100);
-
-            // Poll state at 5Hz; non-overlapping fetch keeps UI responsive under load.
-            setInterval(fetchState, 200);
-
-            // Initial fetch
-            fetchState();
-        });
-
-        // Handle window resize
-        window.addEventListener('resize', () => {
-            if (!usingThreeJS) return;
-            if (!renderer || !camera) return;
-
-            const canvas = document.getElementById('canvas-3d');
-            const width = canvas.clientWidth;
-            const height = canvas.clientHeight;
-
-            if (width > 0 && height > 0) {
-                camera.aspect = width / height;
-                camera.updateProjectionMatrix();
-                renderer.setSize(width, height);
-            }
-        });
+        window.addEventListener('resize', drawOverlay);
+        window.addEventListener('resize', drawMiniMap);
+        window.addEventListener('resize', drawCompass);
+        img.addEventListener('load', drawOverlay);
+        setInterval(fetchState, 33);
+        fetchState();
     </script>
 </body>
 

@@ -14,6 +14,8 @@ The codebase combines:
 ## Top-Level Structure
 
 - `drone_control.py`: Core pymavlink helper functions (connect, mode, arm, takeoff, yaw, movement, land).
+- `run_all.sh` / `run_all_foreground.py`: Unified launcher scripts to start all required nodes and the web dashboard.
+- `web_dashboard.py`: Real-time monitoring dashboard and telemetry stream center.
 - `guarded_mission.py`: Safety-first guided mission flow with manual confirmations and failsafes.
 - `intel.py`, `intelligent_flight.py`, `intel_slant.py`, `test_yellow*.py`, `temp*.py`: Vision-driven autonomous mission variants.
 - `detect.py`, `Detect.py`, `depth.py`, `dist.py`, `imagec.py`, `rs_li_test.py`: Camera/depth/detection utilities.
@@ -21,8 +23,11 @@ The codebase combines:
 - `pcl.py`: Point cloud processing utilities.
 - `PyMav/`: Standalone pymavlink examples and test scripts.
 - `Lidar/`: Synexens SDK assets and `ransac.py` for plane-angle estimation.
+- `optical_flow_cs20_lidar/`: CS20 Lidar bridge and IR tracking pipelines (`ir_tracker.py`, `cs20_lidar_bridge_simple.py`).
+- `optional_marker_landing/`: Precision ArUco marker landing logic (`aruco_landing.py`, `aruco_streamer.py`).
 - `drone_vision_control/`: ROS 2 Python package workspace content (package manifest, build/install artifacts, tests).
 - `files_cv/`: Training outputs and weights for safe-spot detection models.
+- `INSTALL_NETWORK_FIX.md` & `jetson-network-fix.sh`: Jetson network stability service routines.
 - Model files (`*.pt`, `*.onnx`, `*.engine`) and telemetry logs (`mav.tlog`, `log/`) are also present.
 
 ## Main Workflows
@@ -51,6 +56,15 @@ Scripts such as `intelligent_flight.py` and `intel.py` combine:
 
 ### 4) ROS 2 Package Workflow
 `drone_vision_control/` is a ROS 2 package with entry points listed in setup scripts and test files for style/compliance.
+
+### 5) IR Tracking & Lidar Bridges
+`optical_flow_cs20_lidar/ir_tracker.py` processes IR sensor data alongside `cs20_lidar_bridge_simple.py` to forward target vectors and Lidar obstacle avoidance data into the system, optionally combining with MSCKF estimators.
+
+### 6) Web Dashboard & Unified Orchestration
+Run the complete suite via `run_all.sh` or `run_all_foreground.py`. This starts the web UI (`web_dashboard.py`), handles stream relay points, coordinates the MAVLink pipelines, and visualizes the logs and real-time state in `dashboard.html`.
+
+### 7) Precision ArUco Landing
+`optional_marker_landing/aruco_landing.py` controls the exact final descent phase aligning to specific fiducial tags, driven by poses computed in `aruco_streamer.py`.
 
 ## Environment And Dependencies
 
