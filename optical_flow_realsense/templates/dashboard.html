@@ -131,6 +131,11 @@
                 <div class="kv"><b>Detected IDs:</b> <span id="detected-ids">-</span></div>
                 <div class="kv"><b>Marker Label:</b> <span id="marker-label">-</span></div>
                 <div class="kv"><b>Match Score:</b> <span id="match-score">0</span></div>
+                <div class="kv"><b>Seed Scene:</b> <span id="seed-scene">OFF</span></div>
+                <div class="kv"><b>Seed Err px:</b> <span id="seed-err">(0.00, 0.00)</span></div>
+                <div class="kv"><b>Seed Cmd:</b> <span id="seed-cmd">hold</span></div>
+                <div class="kv"><b>Seed Yaw Err:</b> <span id="seed-yaw-err">0.00 deg</span></div>
+                <div class="kv"><b>Seed Yaw Cmd:</b> <span id="seed-yaw-cmd">hold</span></div>
                 <div class="kv"><b>Yaw:</b> <span id="yaw">0.0</span></div>
                 <div class="kv"><b>Altitude:</b> <span id="altitude">0.00</span></div>
                 <div class="kv"><b>Velocity:</b> <span id="vel">(0.00, 0.00)</span></div>
@@ -223,6 +228,68 @@
                 ctx.fillStyle = isLock ? '#00ff66' : '#ffc800';
                 ctx.fillText(text, tx + 4, ty - 2);
             }
+
+            const seedCmd = String(vo.seed_correction_command ?? 'hold').toLowerCase();
+            const seedValid = Boolean(vo.seed_alignment_valid);
+            if (seedValid && seedCmd !== 'hold') {
+                let vx = 0;
+                let vy = 0;
+                for (const t of seedCmd.split('+')) {
+                    const token = t.trim();
+                    if (token === 'move_right') vx += 1;
+                    else if (token === 'move_left') vx -= 1;
+                    else if (token === 'move_down') vy += 1;
+                    else if (token === 'move_up') vy -= 1;
+                }
+                const mag = Math.hypot(vx, vy);
+                if (mag > 0.0) {
+                    const cxv = canvas.width * 0.5;
+                    const cyv = canvas.height * 0.5;
+                    const len = Math.max(40, Math.min(canvas.width, canvas.height) * 0.12);
+                    const ex = cxv + (vx / mag) * len;
+                    const ey = cyv + (vy / mag) * len;
+                    ctx.strokeStyle = '#00e5ff';
+                    ctx.fillStyle = '#00e5ff';
+                    ctx.lineWidth = 3;
+                    ctx.beginPath();
+                    ctx.moveTo(cxv, cyv);
+                    ctx.lineTo(ex, ey);
+                    ctx.stroke();
+
+                    const ang = Math.atan2(ey - cyv, ex - cxv);
+                    const ah = 10;
+                    ctx.beginPath();
+                    ctx.moveTo(ex, ey);
+                    ctx.lineTo(ex - ah * Math.cos(ang - 0.45), ey - ah * Math.sin(ang - 0.45));
+                    ctx.lineTo(ex - ah * Math.cos(ang + 0.45), ey - ah * Math.sin(ang + 0.45));
+                    ctx.closePath();
+                    ctx.fill();
+
+                    ctx.font = '14px monospace';
+                    const label = `SEED CMD: ${seedCmd}`;
+                    const tw = ctx.measureText(label).width + 10;
+                    const tx = Math.max(6, cxv - tw * 0.5);
+                    const ty = Math.max(20, cyv - len - 18);
+                    ctx.fillStyle = 'rgba(0,0,0,0.65)';
+                    ctx.fillRect(tx, ty - 14, tw, 18);
+                    ctx.fillStyle = '#00e5ff';
+                    ctx.fillText(label, tx + 5, ty);
+                }
+            }
+
+            const seedYawValid = Boolean(vo.seed_yaw_valid);
+            const seedYawCmd = String(vo.seed_yaw_correction_command ?? 'hold').toLowerCase();
+            if (seedYawValid && seedYawCmd !== 'hold') {
+                const txt = seedYawCmd === 'turn_left' ? 'YAW: TURN LEFT (CCW)' : 'YAW: TURN RIGHT (CW)';
+                ctx.font = '14px monospace';
+                const tw = ctx.measureText(txt).width + 10;
+                const tx = Math.max(6, canvas.width - tw - 8);
+                const ty = Math.max(22, canvas.height * 0.12);
+                ctx.fillStyle = 'rgba(0,0,0,0.65)';
+                ctx.fillRect(tx, ty - 14, tw, 18);
+                ctx.fillStyle = '#ff9f43';
+                ctx.fillText(txt, tx + 5, ty);
+            }
         }
 
         function updateTelemetry() {
@@ -243,6 +310,30 @@
             }
             document.getElementById('detected-ids').textContent = labels.length > 0 ? labels.join(', ') : '-';
             document.getElementById('match-score').textContent = String(state.match_score ?? 0);
+
+            const seedEnabled = Boolean(vo.seed_enabled);
+            const seedMatched = Boolean(vo.seed_scene_matched);
+            const seedAlignValid = Boolean(vo.seed_alignment_valid);
+            const seedCentered = Boolean(vo.seed_centered);
+            const seedDx = Number(vo.seed_error_dx_px ?? 0);
+            const seedDy = Number(vo.seed_error_dy_px ?? 0);
+            const seedNorm = Number(vo.seed_error_norm_px ?? 0);
+            const seedInliers = Number(vo.seed_inliers ?? 0);
+            const seedCmd = String(vo.seed_correction_command ?? 'hold');
+            const seedYawErr = Number(vo.seed_yaw_error_deg ?? 0);
+            const seedYawCmd = String(vo.seed_yaw_correction_command ?? 'hold');
+            let seedSceneText = 'OFF';
+            if (seedEnabled) {
+                if (seedMatched && seedAlignValid) seedSceneText = seedCentered ? 'MATCHED+CENTER' : 'MATCHED';
+                else if (seedMatched) seedSceneText = 'MATCHED(no-align)';
+                else seedSceneText = 'SEARCH';
+            }
+            document.getElementById('seed-scene').textContent = `${seedSceneText} (inliers:${seedInliers})`;
+            document.getElementById('seed-err').textContent = `(${seedDx.toFixed(2)}, ${seedDy.toFixed(2)}) n=${seedNorm.toFixed(2)}`;
+            document.getElementById('seed-cmd').textContent = seedCmd;
+            document.getElementById('seed-yaw-err').textContent = `${seedYawErr.toFixed(2)} deg`;
+            document.getElementById('seed-yaw-cmd').textContent = seedYawCmd;
+
             document.getElementById('yaw').textContent = `${Number(state.yaw ?? 0).toFixed(1)} deg`;
             document.getElementById('altitude').textContent = `${Number(state.altitude ?? 0).toFixed(2)} m`;
             document.getElementById('vel').textContent = `(${Number(state.velocity_x ?? 0).toFixed(2)}, ${Number(state.velocity_y ?? 0).toFixed(2)})`;

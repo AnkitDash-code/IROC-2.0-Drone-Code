@@ -1429,6 +1429,28 @@ if __name__ == "__main__":
                         cx_raw = float(M["m10"] / M["m00"])
                         cy_raw = float(M["m01"] / M["m00"])
                         x, y, ww, hh = cv2.boundingRect(c)
+
+                        # Refine bounding box and center strictly to the actual light spot core, ignoring scattering
+                        roi = gray[y:y+hh, x:x+ww]
+                        _, max_val, _, _ = cv2.minMaxLoc(roi)
+                        if max_val > 0:
+                            # Isolate hotspot at 80% peak intensity
+                            _, core_bw = cv2.threshold(roi, max_val * 0.80, 255, cv2.THRESH_BINARY)
+                            core_pts = cv2.findNonZero(core_bw)
+                            if core_pts is not None:
+                                core_x, core_y, core_w, core_h = cv2.boundingRect(core_pts)
+                                M_core = cv2.moments(core_bw)
+                                if M_core.get("m00", 0.0) > 1e-6:
+                                    cx_raw = float(x + M_core["m10"] / M_core["m00"])
+                                    cy_raw = float(y + M_core["m01"] / M_core["m00"])
+                                else:
+                                    cx_raw = float(x + core_x + core_w / 2.0)
+                                    cy_raw = float(y + core_y + core_h / 2.0)
+                                x += core_x
+                                y += core_y
+                                ww = core_w
+                                hh = core_h
+
                         candidates.append(
                             {
                                 "area": area,
