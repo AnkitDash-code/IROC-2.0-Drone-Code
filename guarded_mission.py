@@ -769,6 +769,7 @@ class GuardedMission:
         altitude_tolerance = 0.2  # Allow ±0.2m deviation from initial ground
         deadline = time.time() + timeout_s
         checked_once = False
+        alt: Optional[float] = None
 
         try:
             while time.time() < deadline:
@@ -786,9 +787,11 @@ class GuardedMission:
                 checked_once = True
                 time.sleep(0.5)
 
-            print(f"[WARN] Final altitude {alt:.2f} m not at initial ground {self.initial_ground_altitude:.2f} m (tolerance: ±{altitude_tolerance}m). Proceeding anyway.")
+            alt_str = f"{alt:.2f}" if alt is not None else "unknown"
+            print(f"[WARN] Final altitude {alt_str} m not at initial ground {self.initial_ground_altitude:.2f} m (tolerance: ±{altitude_tolerance}m). Proceeding anyway.")
         except KeyboardInterrupt:
-            print(f"\n[VERIFY-INTERRUPT] User interrupted altitude verification. Current: {alt if alt else '?':.2f} m, Initial: {self.initial_ground_altitude:.2f} m")
+            alt_str = f"{alt:.2f}" if alt is not None else "unknown"
+            print(f"\n[VERIFY-INTERRUPT] User interrupted altitude verification. Current: {alt_str} m, Initial: {self.initial_ground_altitude:.2f} m")
             raise
 
     def land_and_disarm(self) -> None:
@@ -1018,38 +1021,6 @@ class GuardedMission:
         print("[WARN] Base alignment timeout. Landing at current position.")
         return False
 
-    def manual_slow_descent(self, target_alt: float = 0.5, speed: float = 0.10) -> None:
-        """Manually lower the drone to target altitude, using time-based estimation if lidar fails."""
-        start_alt = self.get_altitude_m(timeout=0.6)
-        if start_alt is None:
-            start_alt = float(self.base_hold_alt_m)
-            print(f"[WARN] Lidar unavailable at start of descent, assuming starting height of {start_alt:.2f} m")
-        else:
-            print(f"[INFO] Lidar confirmed starting height at {start_alt:.2f} m.")
-            
-        dist_to_drop = max(0.0, start_alt - target_alt)
-        max_duration = (dist_to_drop / speed) + 1.5
-        
-        print(f"[INFO] Manually descending to {target_alt:.2f} m at {speed} m/s (Max {max_duration:.1f}s)")
-        self.set_mode("GUIDED")
-        
-        deadline = time.time() + max_duration
-        while time.time() < deadline:
-            self.assert_no_manual_override("manual-slow-descent")
-            self.send_body_velocity(0.0, 0.0, speed)
-            
-            # Continue checking lidar, but don't block/fail if it drops out
-            alt = self.get_altitude_m(timeout=0.1)
-            if alt is not None:
-                if alt <= target_alt:
-                    print(f"[OK] Lidar confirms {target_alt:.2f} m reached ({alt:.2f} m).")
-                    break
-                    
-            time.sleep(0.1)
-            
-        self.send_body_velocity(0.0, 0.0, 0.0)
-        print("[INFO] Manual slow descent complete.")
-
     def perform_landing_sequence(self, reason: str) -> None:
         print(f"[INFO] Landing sequence reason: {reason}")
 
@@ -1071,8 +1042,19 @@ class GuardedMission:
                     self.descend_to_base_hold_altitude()
                     self.align_over_base_station()
                 
-                # --- NEW: Manual slow descent before starting LAND mode ---
-                self.manual_slow_descent(target_alt=0.5, speed=0.10)
+                # --- NEW: Use slow descent down to 0.8m ---
+                print("[INFO] Initiating descent. Lowering to 0.8m...")
+                self.set_mode("GUIDED")
+                while True:
+                    self.assert_no_manual_override("landing descent")
+                    self.send_body_velocity(0.0, 0.0, 0.10) # Slowly descend at 10cm/s
+                    # Poll altitude aggressively like special_landing
+                    alt = self.get_altitude_m(timeout=0.2)
+                    if alt is not None:
+                        if alt <= 0.80:
+                            print(f"[INFO] Altitude {alt:.2f}m <= 0.8m reached.")
+                            break
+                    time.sleep(0.01)
                 
             except ManualOverride:
                 raise
@@ -1523,36 +1505,18 @@ def main() -> int:
         print("[SAFETY] Attempting to land immediately...")
         try:
             if mission.master and mission.motors_armed():
-                mission.set_mode("LAND")
-                print("[SAFETY] Switched to LAND mode. Waiting to disarm...")
-                import drone_control as dc
-                dc.master.motors_disarmed_wait()
+                try:
+                    print("[SAFETY] Trying safe landing (land_and_disarm)...")
+                    mission.land_and_disarm()
+                except Exception as land_exc:
+                    print(f"[WARN] Safe landing failed: {land_exc}. Forcing LAND mode...")
+                    mission.set_mode("LAND")
+                    import drone_control as dc
+                    dc.master.motors_disarmed_wait()
                 print("[SAFETY] Successfully landed and disarmed after error.")
         except Exception as land_exc:
             print(f"[FATAL] Failsafe landing after exception failed: {land_exc}")
         return 99
-    except Exception as exc:
-        print(f"[ERROR] Unhandled exception occurred: {exc}")
-        print("[SAFETY] Attempting to land immediately...")
-        try:
-            if mission.master and mission.motors_armed():
-                mission.set_mode("LAND")
-                print("[SAFETY] Switched to LAND mode. Waiting to disarm...")
-                import drone_control as dc
-                dc.master.motors_disarmed_wait()
-                print("[SAFETY] Successfully landed and disarmed after error.")
-        except Exception as land_exc:
-            print(f"[FATAL] Failsafe landing after exception failed: {land_exc}")
-        return 99
-    except Exception as exc:
-        print(f"[ERROR] {exc}")
-        try:
-            if mission.master and mission.motors_armed():
-                print("[ERROR] Trying safe landing due to exception...")
-                mission.land_and_disarm()
-        except Exception as land_exc:
-            print(f"[ERROR] Emergency landing also failed: {land_exc}")
-        return 1
     finally:
         try:
             mission.restore_all_modified_params()

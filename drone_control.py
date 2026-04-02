@@ -68,6 +68,10 @@ def set_speed(speed=0.25):
 
 def takeoff(altitude=1):
     """Commands the drone to take off to a specified altitude."""
+    MIN_TAKEOFF_ALT = 0.5   # metres
+    MAX_TAKEOFF_ALT = 6.0   # metres
+    if altitude < MIN_TAKEOFF_ALT or altitude > MAX_TAKEOFF_ALT:
+        raise ValueError(f"Takeoff altitude {altitude}m is outside safe bounds ({MIN_TAKEOFF_ALT}-{MAX_TAKEOFF_ALT}m)")
     print(f"Taking Off to {altitude} meters...")
     master.mav.command_long_send(master.target_system, master.target_component,
                                  mavutil.mavlink.MAV_CMD_NAV_TAKEOFF, 0,
@@ -117,6 +121,8 @@ def takeoff(altitude=1):
 def move_body_ned(distance_x, speed_mps=0.25):
         # Send the position target command
     print("//// Moving ////")
+    if speed_mps <= 0 or speed_mps > 2.0:
+        raise ValueError("speed_mps must be > 0 and <= 2.0")
     master.mav.set_position_target_local_ned_send(
         0,  # time_boot_ms (not used)
         master.target_system,
@@ -128,7 +134,8 @@ def move_body_ned(distance_x, speed_mps=0.25):
         0, 0, 0,                # afx, afy, afz accelerations (ignored)
         0, 0                    # yaw, yaw_rate (ignored)
     )
-    time.sleep(distance_x * 1/speed_mps + 1)
+    wait_s = abs(distance_x) / speed_mps + 1.0
+    time.sleep(wait_s)
     print(f"moved: {distance_x}")
 
 def rotate_yaw(angle_degrees, speed_deg_per_sec=10, clockwise=True):
@@ -264,39 +271,13 @@ def special_landing():
         print(altitude)
         time.sleep(0.01)
     
-    # Motor 
-    for _ in range(5):
-        master.mav.rc_channels_override_send(
-            master.target_system,
-            master.target_component,
-            0,
-            0,
-            0,
-            0,
-            0,
-            2004,
-            0,
-            0
-        )
-        time.sleep(1)
-
-    time.sleep(5)
-    
-    # Motor Estop rectified
-    for _ in range(5):
-        master.mav.rc_channels_override_send(
-            master.target_system,
-            master.target_component,
-            0,
-            0,
-            0,
-            0,
-            0,
-            1000,
-            0,
-            0
-        )
-        time.sleep(1)
+    print("Force disarming via MAV_CMD_COMPONENT_ARM_DISARM...")
+    master.mav.command_long_send(
+        master.target_system,
+        master.target_component,
+        mavutil.mavlink.MAV_CMD_COMPONENT_ARM_DISARM,
+        0, 0, 21196, 0, 0, 0, 0, 0
+    )
 
     print("Landing completed")
 
@@ -307,23 +288,26 @@ if __name__ == "__main__":
     # which imports these functions.
     try:
         connect_to_vehicle()
-        set_mode('LOITER')
-        get_current_position()
-        takeoff(altitude=1)
-        set_mode('GUIDED')
+        
+        # WARNING: The following commands are commented out for safety.
+        # Running them directly will cause live flight without confirmation.
+        
+        # set_mode('LOITER')
+        # get_current_position()
+        # takeoff(altitude=1)
+        # set_mode('GUIDED')
 
-
-        time.sleep(0.5)
+        # time.sleep(0.5)
 
         # set_speed(0.25)
         # # Example: Move forward 1m and rotate 90 deg
         # time.sleep(3)
 
-        move_body_ned(3) #moving straight x degrees, 3 here
-        time.sleep(2)
-        rotate_yaw(90, 10, clockwise=False) # Rotate 90 degrees at 10 deg/s
-        move_body_ned(3) #moving straight x degrees, 3 here
-        time.sleep(2)
+        # move_body_ned(3) #moving straight x degrees, 3 here
+        # time.sleep(2)
+        # rotate_yaw(90, 10, clockwise=False) # Rotate 90 degrees at 10 deg/s
+        # move_body_ned(3) #moving straight x degrees, 3 here
+        # time.sleep(2)
         # rotate_yaw(180, 10, clockwise=False) # Rotate 90 degrees at 10 deg/s
         # rotate_yaw(180, 10, clockwise=False) # Rotate 90 degrees at 10 deg/s
 
