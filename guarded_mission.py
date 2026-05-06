@@ -37,8 +37,8 @@ DEFAULT_NO_PROPELLER_MODE = False
 DEFAULT_SKIP_LANDING_VERIFY = False
 RANGEFINDER_INTERVAL_US = 100000  # 10 Hz
 BATTERY_INTERVAL_US = 200000  # 5 Hz
-SLOW_TAKEOFF_SPEED_UP = 25.0
-SLOW_TAKEOFF_ACCEL_Z = 20.0
+SLOW_TAKEOFF_SPEED_UP = 50.0
+SLOW_TAKEOFF_ACCEL_Z = 30.0  # Increased slightly to match 70 cm/s
 SLOW_LANDING_SPEED = 25.0
 TAKEOFF_PREBRAKE_MARGIN_M = 0.10
 TAKEOFF_REACHED_MARGIN_M = 0.05
@@ -47,13 +47,13 @@ DEFAULT_LOW_VOLTAGE_V = 13.2
 DEFAULT_LOW_VOLTAGE_CONFIRM_COUNT = 3
 DEFAULT_ENABLE_BASE_LANDING = True
 DEFAULT_BASE_HOLD_ALT_M = 1.5
-DEFAULT_BASE_ALIGN_TIMEOUT_S = 20.0
+DEFAULT_BASE_ALIGN_TIMEOUT_S = 30.0  # Increased for longer searching
 DEFAULT_BASE_CENTER_HOLD_S = 2.0
 DEFAULT_BASE_ALIGN_SPEED_MPS = 0.12
 DEFAULT_BASE_METRIC_DEADBAND_M = 0.10
 DEFAULT_BASE_PIXEL_DEADBAND_PX = 14.0
 DEFAULT_BASE_DESCENT_SPEED_MPS = 0.25
-DEFAULT_BASE_DESCENT_TIMEOUT_S = 60.0
+DEFAULT_BASE_DESCENT_TIMEOUT_S = 80.0
 DEFAULT_BASE_VISUAL_STATE_URL = "http://localhost:5000/api/state"
 DEFAULT_BASE_FORWARD_SIGN = 1.0
 DEFAULT_BASE_RIGHT_SIGN = 1.0
@@ -565,13 +565,13 @@ class GuardedMission:
             if not (900 <= int(raw) <= 2100):
                 continue
             if abs(int(raw) - 1500) > deviation:
-                print(f"[MANUAL] RC input detected on channel {index}: {raw}")
+                print(f"variation detected on channel {index}: {raw}")
                 return True
         return False
 
     def assert_no_manual_override(self, context: str) -> None:
         if self.rc_override_detected():
-            raise ManualOverride(f"Pilot RC input detected during {context}.")
+            raise ManualOverride(f"variation detected during {context}.")
 
     @staticmethod
     def _to_float(value, default: float = 0.0) -> float:
@@ -960,33 +960,49 @@ class GuardedMission:
 
                 if align_mode == "base_ref":
                     if metric_valid:
-                        vx, vy = self._velocity_from_error(
-                            err_dx=base_dx_m,
-                            err_dy=base_dy_m,
-                            deadband=float(self.base_metric_deadband_m),
-                            kp=float(self.base_kp_metric),
-                        )
+                        if base_dx_m == 0.0 and base_dy_m == 0.0 and active_cmd != "hold":
+                            vx, vy = self._velocity_from_hover_command(active_cmd)
+                            vx, vy = self._apply_align_velocity_slew(vx, vy)
+                        else:
+                            vx, vy = self._velocity_from_error(
+                                err_dx=base_dx_m,
+                                err_dy=base_dy_m,
+                                deadband=float(self.base_metric_deadband_m),
+                                kp=float(self.base_kp_metric),
+                            )
+                    else:
+                        if base_dx_px == 0.0 and base_dy_px == 0.0 and active_cmd != "hold":
+                            vx, vy = self._velocity_from_hover_command(active_cmd)
+                            vx, vy = self._apply_align_velocity_slew(vx, vy)
+                        else:
+                            vx, vy = self._velocity_from_error(
+                                err_dx=base_dx_px,
+                                err_dy=base_dy_px,
+                                deadband=float(self.base_pixel_deadband_px),
+                                kp=float(self.base_kp_pixel),
+                            )
+                elif align_mode in {"seed", "seed_search"}:
+                    if seed_error_dx_px == 0.0 and seed_error_dy_px == 0.0 and active_cmd != "hold":
+                        vx, vy = self._velocity_from_hover_command(active_cmd)
+                        vx, vy = self._apply_align_velocity_slew(vx, vy)
                     else:
                         vx, vy = self._velocity_from_error(
-                            err_dx=base_dx_px,
-                            err_dy=base_dy_px,
+                            err_dx=seed_error_dx_px,
+                            err_dy=seed_error_dy_px,
                             deadband=float(self.base_pixel_deadband_px),
                             kp=float(self.base_kp_pixel),
                         )
-                elif align_mode in {"seed", "seed_search"}:
-                    vx, vy = self._velocity_from_error(
-                        err_dx=seed_error_dx_px,
-                        err_dy=seed_error_dy_px,
-                        deadband=float(self.base_pixel_deadband_px),
-                        kp=float(self.base_kp_pixel),
-                    )
                 elif align_mode == "drift":
-                    vx, vy = self._velocity_from_error(
-                        err_dx=drift_dx_px,
-                        err_dy=drift_dy_px,
-                        deadband=float(self.base_pixel_deadband_px),
-                        kp=float(self.base_kp_pixel),
-                    )
+                    if drift_dx_px == 0.0 and drift_dy_px == 0.0 and active_cmd != "hold":
+                        vx, vy = self._velocity_from_hover_command(active_cmd)
+                        vx, vy = self._apply_align_velocity_slew(vx, vy)
+                    else:
+                        vx, vy = self._velocity_from_error(
+                            err_dx=drift_dx_px,
+                            err_dy=drift_dy_px,
+                            deadband=float(self.base_pixel_deadband_px),
+                            kp=float(self.base_kp_pixel),
+                        )
                 elif align_mode == "search":
                     if search_start_time is None:
                         search_start_time = time.time()
@@ -1334,7 +1350,7 @@ def parse_args() -> argparse.Namespace:
         "--base-align-timeout",
         default=DEFAULT_BASE_ALIGN_TIMEOUT_S,
         type=float,
-        help="Max seconds to attempt base alignment using tracker state (default: 20)",
+        help="Max seconds to attempt base alignment using tracker state (default: 120)",
     )
     parser.add_argument(
         "--base-center-hold",
