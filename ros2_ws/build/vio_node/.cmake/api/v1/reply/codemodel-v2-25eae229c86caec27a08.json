@@ -1,0 +1,79 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-Release-13d385bfecc9dd052f07.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.15"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"name" : "Release",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "vio_node",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-uninstall-Release-916f46d5d627043a5577.json",
+					"name" : "uninstall",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "vio_executable::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-vio_executable-Release-9c857a788d16c33c54ea.json",
+					"name" : "vio_executable",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "vio_node_uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-vio_node_uninstall-Release-cae1a92a9541d0e8c87f.json",
+					"name" : "vio_node_uninstall",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/mnt/c/Users/ASUS/Desktop/code/Work/IROC 2.0/code/IROC-2.0-Drone-Code/ros2_ws/build/vio_node",
+		"source" : "/mnt/c/Users/ASUS/Desktop/code/Work/IROC 2.0/code/IROC-2.0-Drone-Code/ros2_ws/src/vio_node"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 6
+	}
+}

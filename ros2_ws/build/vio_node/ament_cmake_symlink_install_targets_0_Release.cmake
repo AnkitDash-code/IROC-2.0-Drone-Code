@@ -1,0 +1,1 @@
+ament_cmake_symlink_install_targets("TARGET_FILES" "/mnt/c/Users/ASUS/Desktop/code/Work/IROC 2.0/code/IROC-2.0-Drone-Code/ros2_ws/build/vio_node/vio_executable" "TARGETS" "vio_executable" "DESTINATION" "lib/vio_node")

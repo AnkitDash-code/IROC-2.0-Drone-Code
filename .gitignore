@@ -18,7 +18,6 @@ __pycache__/
 *.pyd
 
 # Local build workspaces (Generated locally by colcon build)
-ros2_ws/
 drone_vision_control/build/
 drone_vision_control/install/
 drone_vision_control/drone_vision_control.egg-info/
