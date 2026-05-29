@@ -6,6 +6,7 @@ from pymavlink import mavutil
 import time
 import select
 import sys
+import os
 
 class ConnectVehicle(DroneActionNode):
     def __init__(self, connection_string="/dev/ttyACM0", baud=57600):
@@ -157,28 +158,51 @@ class OperatorConfirm(DroneActionNode):
     def update(self):
         import sys
         import platform
+        # Allow headless testing by auto-confirming the initial READY token only.
+        # Do NOT auto-confirm ARM or other critical tokens to prevent unintended takeoff.
+        auto = os.environ.get("ASCEND_AUTO_CONFIRM", "0").strip().lower() in {"1", "true", "yes", "on"}
+        if auto and self.expected == "READY":
+            self._log(f"Auto-confirm enabled: accepting '{self.expected}'")
+            return py_trees.common.Status.SUCCESS
 
         if not self._prompted:
             print(f"\n[CONFIRM] Type '{self.expected}' to continue: ", end="", flush=True)
             self._prompted = True
             
-        has_input = False
-        if platform.system() == "Windows":
-            import msvcrt
-            if msvcrt.kbhit():
-                has_input = True
-        else:
-            import select
-            ready, _, _ = select.select([sys.stdin], [], [], 0.05)
-            if ready:
-                has_input = True
-                
-        if has_input:
-            line = sys.stdin.readline().strip()
-            if line == self.expected:
-                self._log(f"User confirmed '{self.expected}'.")
-                return py_trees.common.Status.SUCCESS
+        # If stdin is not interactive (e.g. started under nohup), don't attempt
+        # to read it — avoid OSError and leave the node in RUNNING so a human can
+        # confirm from a real terminal. Use isatty() defensively.
+        try:
+            interactive = False
+            try:
+                interactive = sys.stdin.isatty()
+            except Exception:
+                interactive = False
+
+            if not interactive:
+                self._log("Stdin not interactive; awaiting manual confirmation in terminal.")
+                return py_trees.common.Status.RUNNING
+
+            has_input = False
+            if platform.system() == "Windows":
+                import msvcrt
+                if msvcrt.kbhit():
+                    has_input = True
             else:
-                self._prompted = False # Prompt again
+                import select
+                ready, _, _ = select.select([sys.stdin], [], [], 0.05)
+                if ready:
+                    has_input = True
+
+            if has_input:
+                line = sys.stdin.readline().strip()
+                if line == self.expected:
+                    self._log(f"User confirmed '{self.expected}'.")
+                    return py_trees.common.Status.SUCCESS
+                else:
+                    self._prompted = False # Prompt again
+        except OSError:
+            self._log("Stdin unavailable (OSError); awaiting manual confirmation in terminal.")
+            return py_trees.common.Status.RUNNING
 
         return py_trees.common.Status.RUNNING

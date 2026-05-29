@@ -6,7 +6,7 @@ import time
 
 BATT_LOW_V = 16.0      # 4S: 4 × 4.0V
 BATT_CRIT_V = 15.2     # 4S: 4 × 3.8V
-ALT_MAX_M = 6.5        # hard ceiling
+ALT_MAX_M = 6.0        # hard ceiling (updated per request)
 ALT_MIN_M = 1.5        # during survey
 
 class BatteryMonitor(DroneActionNode):
@@ -143,5 +143,108 @@ def make_safety_guard():
             synchronise=False
         )
     )
-    guard.add_children([BatteryMonitor(), AltitudeMonitor()])
+    # Add an occupancy-map based fence monitor if available
+    try:
+        fence = MapFenceMonitor()
+        guard.add_children([BatteryMonitor(), AltitudeMonitor(), fence])
+    except Exception:
+        # If MapFenceMonitor cannot be constructed (rclpy missing etc), fall back
+        guard.add_children([BatteryMonitor(), AltitudeMonitor()])
     return guard
+
+
+class MapFenceMonitor(DroneActionNode):
+    """Checks the nav occupancy grid (/local_costmap/costmap or /map) and
+    preempts the mission (FAIL) if the current or planned position is inside
+    an occupied cell (fence/obstacle). This uses `rclpy` if available; if not,
+    the monitor disables itself gracefully.
+    """
+    def __init__(self):
+        super().__init__("MapFenceMonitor")
+        self._enabled = False
+        self._grid = None
+
+        # Try to create a lightweight rclpy subscriber in a background thread.
+        try:
+            import rclpy
+            from rclpy.node import Node
+            from nav_msgs.msg import OccupancyGrid
+        except Exception:
+            self._log("rclpy/nav_msgs not available — MapFenceMonitor disabled")
+            return
+
+        self._enabled = True
+
+        # Create a simple rclpy node in a background thread so this BT node
+        # remains synchronous. We only subscribe and store the latest grid.
+        import threading
+
+        class _MapNode(Node):
+            def __init__(self, outer):
+                super().__init__("map_fence_listener")
+                self._outer = outer
+                # try local_costmap first, then /map
+                self.create_subscription(OccupancyGrid, '/local_costmap/costmap', self._cb, 1)
+                self.create_subscription(OccupancyGrid, '/map', self._cb, 1)
+
+            def _cb(self, msg: OccupancyGrid):
+                # store latest grid on outer
+                self._outer._grid = msg
+
+        def _spin_thread():
+            try:
+                rclpy.init()
+            except Exception:
+                pass
+            node = _MapNode(self)
+            try:
+                rclpy.spin(node)
+            except Exception:
+                pass
+
+        t = threading.Thread(target=_spin_thread, daemon=True)
+        t.start()
+
+    def update(self):
+        if not self._enabled:
+            return py_trees.common.Status.RUNNING
+
+        # Need a position to check
+        pos = self.bb.get(BK.POSITION_NED)
+        if pos is None:
+            return py_trees.common.Status.RUNNING
+
+        if self._grid is None:
+            # No map yet
+            return py_trees.common.Status.RUNNING
+
+        try:
+            x, y, _z = pos
+            info = self._grid.info
+            ox = info.origin.position.x
+            oy = info.origin.position.y
+            res = info.resolution
+            w = info.width
+            h = info.height
+
+            mx = int((x - ox) / res)
+            my = int((y - oy) / res)
+            if mx < 0 or my < 0 or mx >= w or my >= h:
+                # Outside current map window — be conservative and continue
+                return py_trees.common.Status.RUNNING
+
+            idx = my * w + mx
+            cell = self._grid.data[idx]
+            # Occupied cells in nav maps are usually >=50
+            if cell >= 50:
+                self._log(f"Map fence breach at ({x:.2f},{y:.2f}) -> occupied cell={cell}")
+                try:
+                    dc.set_mode("RTL")
+                except Exception:
+                    pass
+                return py_trees.common.Status.FAILURE
+
+        except Exception as e:
+            self._log(f"MapFenceMonitor error: {e}")
+
+        return py_trees.common.Status.RUNNING

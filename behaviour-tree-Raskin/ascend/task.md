@@ -56,7 +56,7 @@ This document tracks which components from the old monolithic codebase (`guarded
 - `[ ]` Uncomment `WaitRangefinder(timeout_s=15.0)` in PreFlight block
 - `[ ]` Uncomment `WaitBatteryTelemetry(timeout_s=15.0)` in PreFlight block
 - `[ ]` Uncomment `GroundCheck()` in PreFlight block
-- `[ ]` Replace `AltitudeMonitor()` with `make_safety_guard()` in the root Parallel node
+- `[x]` Replace `AltitudeMonitor()` with `make_safety_guard()` in the root Parallel node
 - `[ ]` Change `SetMode("GUIDED")` → `SetMode("LOITER")` in Takeoff phase
 - `[ ]` *(For full mission only)* Replace `Hover(duration_s=60)` with `make_survey_phase()` and `NavigateHome()`
 - `[ ]` *(For full mission only)* Import those functions from `ascend.bt_nodes.survey` at the top of the file

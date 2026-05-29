@@ -14,6 +14,7 @@ and keeps checking altitude safety in all loops.
 import argparse
 import json
 import math
+import os
 import select
 import sys
 import time
@@ -154,8 +155,14 @@ class GuardedMission:
         self.master = dc.master
 
     def connect(self) -> None:
-        print(f"[INFO] Connecting to vehicle: {self.connection} @ {self.baud}")
-        dc.CONNECTION_STRING = self.connection
+        connection = self.connection
+        if connection.startswith("/dev/") and not os.path.exists(connection):
+            fallback = os.environ.get("GUARDED_MISSION_FALLBACK_CONNECT", "udp:127.0.0.1:14552").strip()
+            print(f"[WARN] Connection {connection} not found. Falling back to {fallback} for SITL.")
+            connection = fallback
+
+        print(f"[INFO] Connecting to vehicle: {connection} @ {self.baud}")
+        dc.CONNECTION_STRING = connection
         dc.BAUD_RATE = self.baud
         dc.connect_to_vehicle()
         self._sync_master()
@@ -555,10 +562,11 @@ class GuardedMission:
         if msg is None:
             return False
 
+        # Channel 3 is throttle and is often low (near 1000) while disarmed / on the ground.
+        # That should not be treated as a manual override in SITL or on a parked vehicle.
         channels = [
             getattr(msg, "chan1_raw", 0),
             getattr(msg, "chan2_raw", 0),
-            getattr(msg, "chan3_raw", 0),
             getattr(msg, "chan4_raw", 0),
         ]
         for index, raw in enumerate(channels, start=1):
@@ -742,10 +750,46 @@ class GuardedMission:
                 start = time.time()
             time.sleep(0.1)
 
+    def wait_for_gps_fix(self, timeout_s: float = 60.0, min_fix_type: int = 3) -> None:
+        if self.master is None:
+            raise RuntimeError("Vehicle not connected.")
+
+        deadline = time.time() + float(timeout_s)
+        print(f"[CHECK] Waiting for GPS fix before takeoff (fix_type >= {min_fix_type})...")
+        last_log = 0.0
+
+        while time.time() < deadline:
+            self.assert_no_manual_override("gps fix wait")
+            msg = self.master.recv_match(
+                type=["GPS_RAW_INT", "GPS2_RAW"],
+                blocking=True,
+                timeout=0.5,
+            )
+            if msg is None:
+                continue
+
+            fix_type = getattr(msg, "fix_type", None)
+            sats = getattr(msg, "satellites_visible", None)
+            if fix_type is None:
+                continue
+
+            now = time.time()
+            if now - last_log >= 2.0:
+                sat_txt = f", sats={int(sats)}" if sats is not None else ""
+                print(f"[GPS] fix_type={int(fix_type)}{sat_txt}")
+                last_log = now
+
+            if int(fix_type) >= int(min_fix_type):
+                print(f"[OK] GPS fix acquired (fix_type={int(fix_type)}).")
+                return
+
+        raise TimeoutError(f"GPS fix not acquired within {timeout_s:.0f}s.")
+
     def command_takeoff(self, target_alt: float) -> None:
         self._sync_master()
         if self.master is None:
             raise RuntimeError("Vehicle not connected.")
+        self.set_mode("GUIDED")
         dc.takeoff(target_alt)
         print(f"[INFO] Takeoff requested via drone_control.takeoff(). Target={target_alt:.2f} m")
 
@@ -1262,6 +1306,8 @@ class GuardedMission:
         self.confirm_step("Arm now?", "ARM")
         self.assert_no_manual_override("arming")
         self.arm()
+
+        self.wait_for_gps_fix(timeout_s=60.0, min_fix_type=3)
 
         self.confirm_step("Start takeoff now?", "TAKEOFF")
         self.assert_no_manual_override("pre-takeoff")

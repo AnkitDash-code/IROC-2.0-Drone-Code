@@ -6,3 +6,24 @@ SynexensPythonSDK4_4.2.4.0_202504281506/
 *.onnx*.log
 logs/
 log/
+
+# ==========================================
+# ONLY SYSTEM NOISE - ZERO SOURCE CODE EXCLUDED
+# ==========================================
+
+# Python runtime artifacts (Automatically generated on execute)
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Local build workspaces (Generated locally by colcon build)
+ros2_ws/
+drone_vision_control/build/
+drone_vision_control/install/
+drone_vision_control/drone_vision_control.egg-info/
+.built_by
+
+# Editor settings (If you want to keep yours, comment this out)
+.vscode/
+.DS_Store
